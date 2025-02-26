@@ -12,6 +12,8 @@
 </head>
 
 <body>
+        <h2><a href="{% url 'product_new' %}">Create</a></h2>
+    
 
 {% if user.is_authenticated %}
     <p>Hi {{user.username}}</p>
@@ -19,6 +21,7 @@
         {% csrf_token %}
         <button type="submit">Logout</button>
     </form>
+   
 {% else %}
     <p>You are not logged in</p>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -31,13 +34,18 @@
                 <li class="nav-item">
                     <a href="{% url 'signup' %}">signup</a>
                 </li>
+                <li class="nav-item">
+                    <a href="{% url 'product_new' %}"></a>
+                </li>
             </ul>
         </div>
     <!-- <a href="{% url 'login' %}">Log In</a>
     <a href="{% url 'signup' %}">signup</a> -->
     </nav>
 {% endif %}
-    {% block content %}{% endblock content %}
+    {% block content %}
+    
+    {% endblock content %}
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-
 YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

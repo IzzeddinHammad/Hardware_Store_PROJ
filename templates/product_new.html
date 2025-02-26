@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %} Create New Product {% endblock title %}
+
+{% block content %}
+    <h1>New Product</h1>
+        <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Save"/>
+</form>
+{% endblock content %}
