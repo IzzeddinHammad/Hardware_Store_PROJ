@@ -1,8 +1,8 @@
-from django.views.generic import TemplateView, DetailView
+from django.views.generic import TemplateView, DetailView, ListView
 from .models import Product
 # Create your views here.
 
-class HomePageView(TemplateView):
+class HomePageView(ListView):
     model = Product 
     template_name = 'home.html'
     context_object_name = "all_products_list"
