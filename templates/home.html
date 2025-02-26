@@ -5,5 +5,9 @@
 {% block content %}
 
 <h1>Home Page</h1>
+{% for product in all_products_list %}
+<h2>{{product.name}}</h2>
+{% endfor %}
+
 
 {% endblock content %}
