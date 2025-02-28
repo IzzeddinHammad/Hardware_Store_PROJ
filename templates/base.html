@@ -17,7 +17,6 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Hardware Store</a>
 
-            <!-- Search Form -->
             <form class="d-flex ms-auto" action="{% url 'search_results' %}" method="get">
                 <input name="q" class="form-control me-2" type="search" placeholder="Search for products..." aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
@@ -27,6 +26,9 @@
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         <span class="navbar-text">Hi {{ user.username }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'password_change' %}">Change Password</a>
                     </li>
                     <li class="nav-item">
                         <form action="{% url 'logout' %}" method="post" class="d-inline">
@@ -42,7 +44,10 @@
                         <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'product_new' %}"></a>  <!-- Kept empty as requested -->
+                        <a class="nav-link text-warning" href="{% url 'password_reset' %}">Forgot Password?</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'product_new' %}"></a>
                     </li>
                 {% endif %}
             </ul>
