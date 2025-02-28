@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
 
-
+{% load static %}
 
 {% block content %}
 
 <h1>Home Page</h1>
 <h3>Our Products</h3>
+
+<img src="{% static 'images/home.jpg' %}" alt="Home Image" width="600">
+
 {% for product in all_products_list %}
 <div>
-    <h2><a href="{% url 'product_detail' product.pk %}">{{product.name}}</a></h2>
+    <h2><a href="{% url 'product_detail' product.pk %}">{{ product.name }}</a></h2>
 </div>
 {% endfor %}
-
 
 {% endblock content %}
