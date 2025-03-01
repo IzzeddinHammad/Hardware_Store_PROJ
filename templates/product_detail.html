@@ -9,4 +9,5 @@
 </div>
 <p><a href="{% url 'product_edit' product.pk %}">Edit product</a></p>
 <p><a href="{% url 'product_delete' product.pk %}">Delete product</a></p>
+<p><a href="{% url 'cart' product.pk %}">Add to cart</a></p>
 {% endblock content %}
