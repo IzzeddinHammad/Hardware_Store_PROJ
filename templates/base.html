@@ -16,14 +16,16 @@
 
 <body>
 
+
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Hardware Store</a>
 
-            <form class="d-flex ms-auto" action="{% url 'search_results' %}" method="get">
+            <form class="d-flex ms-auto" action="{% url 'store:search_results' %}" method="get">
                 <input name="q" class="form-control me-2" type="search" placeholder="Search for products..." aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
+
 
             <ul class="navbar-nav ms-3">
                 {% if user.is_authenticated %}
@@ -55,7 +57,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{% url 'product_new' %}"></a>
+                        <a href="{{  product_new.get_absolute_url  }}"></a>
                     </li>
                 {% endif %}
             </ul>
@@ -72,3 +74,6 @@
 
 </body>
 </html>
+
+
+
