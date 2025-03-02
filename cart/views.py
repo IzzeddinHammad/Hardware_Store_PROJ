@@ -1,7 +1,12 @@
+import stripe
+from django.conf import settings
 from django.shortcuts import redirect, render, get_object_or_404
 from store.models import Product
 from .models import Cart, CartItem
 import uuid
+from django.urls import reverse
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def _cart_id(request):
     cart = request.session.session_key
@@ -69,3 +74,32 @@ def empty_cart(request):
 
     return redirect('cart:cart_detail')
 
+def checkout(request):
+    if request.method == 'POST':
+        total = 100
+        stripe_total = int(total * 100)
+        description = 'Hardware Store - Order Payment'
+
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                payment_method_types=['card'],
+                line_items=[{
+                    'price_data': {
+                        'currency': 'eur',
+                        'product_data': {
+                            'name': 'Order from Hardware Store',
+                        },
+                        'unit_amount': stripe_total,
+                    },
+                    'quantity': 1,
+                }],
+                mode='payment',
+                billing_address_collection='required',
+                success_url=request.build_absolute_uri(reverse('shop:all_products')),
+                cancel_url=request.build_absolute_uri(reverse('cart:cart_detail')),
+            )
+            return redirect(checkout_session.url, code=303)
+        except Exception as e:
+            return render(request, 'cart/cart.html', {'error': str(e)})
+
+    return render(request, 'cart/cart.html')

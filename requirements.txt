@@ -1,3 +1,4 @@
 django
 pillow
 crispy_bootstrap5
+stripe
