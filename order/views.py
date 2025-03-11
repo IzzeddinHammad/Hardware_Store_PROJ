@@ -3,8 +3,8 @@ from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Order
 from cart.models import Cart, CartItem
-from django.contrib.auth.mxins import LoginRequiredMixin
-from django.views.generic import View 
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import View
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -34,7 +34,7 @@ def process_payment(request, order_id):
         success_url=request.build_absolute_uri('/order/payment_success/'),
         cancel_url=request.build_absolute_uri('/order/payment_failure/'),
     )
-    
+
     return redirect(session.url)
 
 def payment_success(request):
@@ -44,7 +44,7 @@ def payment_success(request):
         order.is_paid = True
         order.save()
 
-        cart_id = request.session.session_key  
+        cart_id = request.session.session_key
         if cart_id:
             CartItem.objects.filter(cart__cart_id=cart_id).delete()
             Cart.objects.filter(cart_id=cart_id).delete()
