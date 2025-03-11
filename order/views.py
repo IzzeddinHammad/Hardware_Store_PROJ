@@ -3,8 +3,18 @@ from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Order
 from cart.models import Cart, CartItem
+from django.contrib.auth.mxins import LoginRequiredMixin
+from django.views.generic import View 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
+class orderHistory(LoginRequiredMixin, View):
+    def get (self, request):
+        if request.user.is_authenticated:
+            email =str(request.user.email)
+            order_details = Order.objects.filter(emailAddress=email)
+        return render(request, 'order_list.html', {'order_details': order_details})
+
 
 def process_payment(request, order_id):
     order = get_object_or_404(Order, id=order_id)

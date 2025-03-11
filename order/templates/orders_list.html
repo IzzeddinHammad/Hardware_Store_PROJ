@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    Order History - HSSM
+{% endblock %}
+{% block content %}
+<div>
+    <div class="text-center">
+        <br>
+        <h1 class="text-center my_title">Order History</h1>
+        <br>
+        {% if order_details %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Order Number</th>
+                    <th>Order Date</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in order_details %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+
+        {% endif %}
+    </div>
+</div>
+<br>
+<br>
