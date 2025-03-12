@@ -28,6 +28,9 @@
                 <input name="q" class="form-control me-2" type="search" placeholder="Search for products..." aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
+            {% if user.profile %}
+                <button class="nav-link"><a href="{% url 'show_profile' %}">Show Profile</a></button>
+            {% endif %}
 
             <ul class="navbar-nav ms-3">
                 {% if user.is_authenticated %}
@@ -43,6 +46,22 @@
                             <button class="btn btn-outline-danger" type="submit">Logout</button>
                         </form>
                     </li>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        {% if user.profile %}
+                            <li><a class="dropdown-item" href="{% url 'show_profile' user.profile.pk %}">View Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'edit_profile' user.profile.pk %}">Edit Profile</a></li>
+                        {% else %}
+                            <li><a class="dropdown-item" href="{% url 'create_profile' %}">Create Profile</a></li>
+                        {% endif %}
+                        <li><a class="dropdown-item" href="{% url 'password_change' %}">Change Password</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-item">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
                     {% if item_count > 0 %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'cart:cart_detail' %}">
