@@ -23,10 +23,10 @@
             <tbody>
                 {% for order in order_details %}
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.created| date: "d M Y"}}</td>
+                    <td> {{ order.total }}</td>
+                    <td><a href="{% url 'order:order_detail' order.id %}">View Order</a></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -34,9 +34,11 @@
             </tbody>
         </table>
         {% else %}
+        <p>You haven't placed any orders. <br> <a href="{%url 'store:product_list' %}">Continue Shopping</a></p>
 
         {% endif %}
     </div>
 </div>
 <br>
 <br>
+{% endblock %}
