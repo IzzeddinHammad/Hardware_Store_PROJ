@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -43,6 +42,13 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'cart',
+
+
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -53,7 +59,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'middleware.no_cache.NoCacheMiddleware'
+    'middleware.no_cache.NoCacheMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'Hardware_store.urls'
@@ -147,3 +154,28 @@ STRIPE_PUBLIC_KEY = "pk_test_51QKJ9OI78SCc1DO0Q6X0kJLqN5nTJET2Q0tQZw6Ate23fsUqsD
 STRIPE_SECRET_KEY = "sk_test_51QKJ9OI78SCc1DO0dWihn06jBJEVvCQsYtiZIWUfpiFVoMsu1nSuvyNO7xsfYUKS8XkJuO333fnMHd6B08GDO6vr001xih5hng"
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
+SOCIALACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_AUTO_SIGNUP = True

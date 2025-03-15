@@ -1,16 +1,343 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}
-Sign Up Page
-{% endblock title %}
+{% block title %}Sign Up{% endblock title %}
 
 {% block content %}
+    <!-- Main container for centering the signup card on the screen -->
+    <div class="container">
+        <!-- Signup card containing both the image and the form -->
+        <div class="login-card">
+            <!-- Left side of the card containing the decorative image -->
+            <div class="card-left">
+                <div class="image-cover">
+                    <img src="https://images.unsplash.com/photo-1533090368676-1fd25485db88?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Woodworking Tools">
+                </div>
+            </div>
+            <!-- Right side of the card containing the signup form -->
+            <div class="card-right">
+                <!-- Title of the signup form -->
+                <h1 class="title">Woodcraft</h1>
+                <!-- Subtitle for creating account -->
+                <h2 class="welcome">Create Your Account</h2>
+                <!-- Form for user input -->
+                <form method="POST">
+                    {% csrf_token %}
 
-<h1>Sign Up</h1>
-<form action="" method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="Sign Up">
-</form>
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
 
+                    <!-- Input group for username -->
+                    <div class="input-group">
+                        <label for="{{ form.username.id_for_label }}">Username</label>
+                        <input type="text" name="{{ form.username.html_name }}"
+                               id="{{ form.username.id_for_label }}"
+                               class="{% if form.username.errors %}is-invalid{% endif %}"
+                               required>
+                        {% if form.username.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.username.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Input group for email -->
+                    <div class="input-group">
+                        <label for="{{ form.email.id_for_label }}">Email</label>
+                        <input type="email" name="{{ form.email.html_name }}"
+                               id="{{ form.email.id_for_label }}"
+                               class="{% if form.email.errors %}is-invalid{% endif %}"
+                               required>
+                        {% if form.email.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.email.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Input group for date of birth -->
+                    <div class="input-group">
+                        <label for="date_of_birth">Date of Birth</label>
+                        <input type="date" name="date_of_birth"
+                               id="date_of_birth"
+                               required>
+                    </div>
+
+                    <!-- Input group for password -->
+                    <div class="input-group">
+                        <label for="{{ form.password1.id_for_label }}">Password</label>
+                        <input type="password" name="{{ form.password1.html_name }}"
+                               id="{{ form.password1.id_for_label }}"
+                               class="{% if form.password1.errors %}is-invalid{% endif %}"
+                               required>
+                        {% if form.password1.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.password1.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Input group for password confirmation -->
+                    <div class="input-group">
+                        <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                        <input type="password" name="{{ form.password2.html_name }}"
+                               id="{{ form.password2.id_for_label }}"
+                               class="{% if form.password2.errors %}is-invalid{% endif %}"
+                               required>
+                        {% if form.password2.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.password2.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    {% if form.password1.help_text %}
+                    <div class="password-help small text-muted mb-3">
+                        {{ form.password1.help_text|safe }}
+                    </div>
+                    {% endif %}
+
+                    <!-- Actions section containing the Sign Up button -->
+                    <div class="actions d-grid">
+                        <button type="submit" class="btn">Create Account</button>
+                    </div>
+
+                    <!-- Section for login link -->
+                    <div class="create-account">
+                        <p>Already have an account? <a href="{% url 'login' %}">Sign In</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    <style>
+/* Global reset for consistent margin, padding, and box-sizing across browsers */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Styling for the signup page section */
+#content {
+    position: relative;
+    min-height: calc(100vh - 56px); /* Adjust for navbar height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Container to center the signup card on the page */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+    margin: 3rem auto;
+}
+
+/* Signup card that holds both the image and the form */
+.login-card {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Left side of the card containing the image */
+.card-left {
+    width: 50%;
+    overflow: hidden;
+}
+
+/* Styling the image to cover the entire left side */
+.card-left .image-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Right side of the card containing the form */
+.card-right {
+    width: 50%;
+    padding: 40px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Title of the form */
+.title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 42px;
+    color: #a05334;
+    text-align: center;
+}
+
+/* Welcome message below the title */
+.welcome {
+    font-size: 20px;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Grouping label and input fields together */
+.input-group {
+    margin-bottom: 16px;
+}
+
+/* Styling the labels above input fields */
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #898989;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Styling the input fields */
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Error message styling */
+.invalid-feedback {
+    color: #dc3545;
+    font-size: 80%;
+    margin-top: 4px;
+}
+
+/* Password help text styling */
+.password-help {
+    margin-top: -10px;
+    margin-bottom: 15px;
+    font-size: 80%;
+}
+
+/* Primary button styling */
+.actions .btn {
+    padding: 10px 20px;
+    background-color: #a05334;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover effect for buttons */
+.actions .btn:hover {
+    background-color: #b66a4c;
+    transform: scale(1.05);
+}
+
+/* Styling the account creation/sign-in section */
+.create-account {
+    font-size: 12px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Styling the sign-in link */
+.create-account a {
+    color: #007BFF;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+/* Hover effect for the sign-in link */
+.create-account a:hover {
+    color: #0056b3;
+}
+
+/* Styling for the image credit section */
+.image-credit {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+}
+
+.image-credit a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.image-credit a:hover {
+    text-decoration: underline;
+}
+
+/* Media Query for responsiveness on smaller screens */
+@media (max-width: 768px) {
+    /* Stacking the signup card vertically on small screens */
+    .login-card {
+        flex-direction: column;
+    }
+
+    /* Hiding the left side image on small screens */
+    .card-left {
+        display: none;
+    }
+
+    /* Making the right side form full-width */
+    .card-right {
+        width: 100%;
+        padding: 30px 40px;
+    }
+
+    /* Adjusting title size for smaller screens */
+    .title {
+        font-size: 28px;
+    }
+
+    /* Adjusting welcome text size for smaller screens */
+    .welcome {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    /* Adjusting input padding for smaller screens */
+    .input-group input {
+        padding: 8px;
+    }
+
+    /* Adjusting button padding and font size for smaller screens */
+    .actions .btn {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+    </style>
 {% endblock content %}

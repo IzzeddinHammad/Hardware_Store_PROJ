@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .views import SignUpView , ProfileEditView , ProfilePageView
+from .views import SignUpView , ProfileEditView , ProfilePageView , ProfileCreateView
 
 urlpatterns = [
     path('signup/',SignUpView.as_view(),name='signup'),
@@ -11,5 +11,6 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'), name='password_reset_complete'),
     path('edit_profile/<int:pk>/' ,ProfileEditView.as_view() , name= 'edit_profile' ),
-    path('profile/<int:pk>/',ProfilePageView.as_view(), name='show_profile')
+    path('profile/<int:pk>/',ProfilePageView.as_view(), name='show_profile'),
+    path('create_profile/', ProfileCreateView.as_view(), name='create_profile'),
 ]

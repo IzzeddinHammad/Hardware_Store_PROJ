@@ -1,5 +1,37 @@
 {% extends 'base.html' %}
 {% block title %}User Profile{% endblock title %}
 {% block content %}
-    <br />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title">{{ profile.user.username }}'s Profile</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-4 fw-bold">Username:</div>
+                            <div class="col-md-8">{{ profile.user.username }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 fw-bold">Email:</div>
+                            <div class="col-md-8">{{ profile.user.email }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 fw-bold">Date of Birth:</div>
+                            <div class="col-md-8">{{ profile.date_of_birth }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 fw-bold">Account Created:</div>
+                            <div class="col-md-8">{{ profile.user.date_joined }}</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'edit_profile' profile.pk %}" class="btn btn-primary">Edit Profile</a>
+                        <a href="{% url 'password_change' %}" class="btn btn-secondary">Change Password</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock content %}
