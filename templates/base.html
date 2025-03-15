@@ -51,7 +51,7 @@
                             <li><a class="dropdown-item" href="{% url 'show_profile' user.profile.pk %}">View Profile</a></li>
                             <li><a class="dropdown-item" href="{% url 'edit_profile' user.profile.pk %}">Edit Profile</a></li>
                         {% else %}
-                            <li><a class="dropdown-item" href="{% url 'create_profile' %}">Create Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'login' %}">login</a></li>
                         {% endif %}
                         <li><a class="dropdown-item" href="{% url 'password_change' %}">Change Password</a></li>
                         <li><hr class="dropdown-divider"></li>

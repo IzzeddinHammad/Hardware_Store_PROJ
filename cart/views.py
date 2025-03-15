@@ -39,7 +39,7 @@ def cart_remove(request, product_id):
     cart = Cart.objects.get(cart_id=_cart_id(request))
     product = get_object_or_404(Product, id=uuid.UUID(str(product_id)))
     cart_item = CartItem.objects.filter(product=product, cart=cart).first()
-    
+
     if cart_item:
         if cart_item.quantity > 1:
             cart_item.quantity -= 1
@@ -114,7 +114,7 @@ def create_order(request):
 
             cart.delete()
 
-        return redirect('/products/')
+        return redirect('order:thanks' , order_details.id)
 
     except (ObjectDoesNotExist, StripeError, Exception) as e:
         return redirect('/products/')
