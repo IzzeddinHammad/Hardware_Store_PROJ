@@ -4,6 +4,7 @@ from django.views import generic
 from django.views.generic import UpdateView , DetailView , CreateView
 from .models import Profile , CustomUser
 from .forms import CustomUserCreationForm
+from django.contrib.auth.models import Group
 # Create your views here.
 
 
@@ -13,13 +14,42 @@ class SignUpView(generic.CreateView):
     template_name = 'registration/signup.html'
     success_url = reverse_lazy('login')
 
-    # def form_valid(self, form):
-    #     # Save the new user
-    #     response = super().form_valid(form)
-    #     # Add user to the Customer group
-    #     customer_group, created = Group.objects.get_or_create(name='Customer')
-    #     self.object.groups.add(customer_group)
-    #     return response # Redirect to success URL
+    def form_valid(self, form):
+        # Save the new user
+        response = super().form_valid(form)
+
+        # Add user to the Customer group by default
+        customer_group, created = Group.objects.get_or_create(name='Customer')
+        self.object.groups.add(customer_group)
+
+        # If user chose to be a vendor, add them to Vendor group as well
+        if form.cleaned_data.get('is_vendor'):
+            vendor_group, created = Group.objects.get_or_create(name='Vendor')
+            self.object.groups.add(vendor_group)
+
+        return response
+
+
+
+class VendorSignUpView(CreateView):
+    model = CustomUser
+    form_class = CustomUserCreationForm
+    template_name = 'registration/signup.html'
+    success_url = reverse_lazy('login')
+    def form_valid(self, form):
+    # Save the new user
+        response = super().form_valid(form)
+
+    # Add user to the Customer group
+
+        customer_group, created = Group.objects.get_or_create(name='Vendor')
+
+        self.object.groups.add(vendor_group)
+
+        return response # Redirect to success URL
+
+
+
 
 
 
