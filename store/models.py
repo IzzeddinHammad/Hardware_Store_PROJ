@@ -3,6 +3,19 @@ from django.db import models
 from django.urls import reverse
 from django.conf import settings
 
+class Category(models.Model):
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to="images", default="category.jpg", null=True, blank=True)
+    slug = models.SlugField(unique=True)
+
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        return self.title
+    
+    def products(self):
+        return Product.objects.filter(category=self)
 
 class Product(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
