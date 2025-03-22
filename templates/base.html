@@ -68,12 +68,15 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Log In</a>
                     </li>
-                    <li class="nav-item">
+                    <li>
+                        <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+                    </li>
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="{% url 'csignup' %}">Customer Sign Up</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'vsignup' %}">Vendor Sign Up</a>
-                    </li>
+                    </li> -->
                 {% endif %}
             </ul>
         </div>
@@ -83,6 +86,7 @@
         {% block content %}
         {% endblock content %}
     </div>
+    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

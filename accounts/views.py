@@ -8,6 +8,10 @@ from django.contrib.auth.models import Group
 # Create your views here.
 
 
+
+
+
+
 class SignUpView(generic.CreateView):
     model = CustomUser
     form_class = CustomUserCreationForm

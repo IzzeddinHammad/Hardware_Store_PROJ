@@ -1,10 +1,13 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from .views import SignUpView , ProfileEditView , ProfilePageView , ProfileCreateView , VendorSignUpView
+from django.views.generic import TemplateView
+
 
 urlpatterns = [
     path('c_signup/',SignUpView.as_view(),name='csignup'),
     path('v_signup/',VendorSignUpView.as_view(),name='vsignup'),
+    path('signup/',TemplateView.as_view(template_name = "registration/signup_c_v.html"),name='signup'),
     path('password_change/', auth_views.PasswordChangeView.as_view(template_name='registration/password_change_form.html'), name='password_change'),
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name='registration/password_change_done.html'), name='password_change_done'),
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/password_reset_form.html'), name='password_reset'),

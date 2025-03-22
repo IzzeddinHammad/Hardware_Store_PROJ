@@ -20,11 +20,15 @@ def _cart_id(request):
 def add_cart(request, product_id):
     product = get_object_or_404(Product, id=uuid.UUID(str(product_id)))
     cart, _ = Cart.objects.get_or_create(cart_id=_cart_id(request))
-    cart_item, created = CartItem.objects.get_or_create(product=product, cart=cart, defaults={'quantity': 1})
+    cart_item, created = CartItem.objects.get_or_create(product=product, cart=cart, defaults={'quantity': 0})
 
-    if not created:
-        cart_item.quantity += 1
-        cart_item.save()
+    if product.stock < cart_item.quantity + 1:
+        return render(request, 'cart/insufficient_stock.html', {'product': product})
+
+    cart_item.quantity += 1
+    cart_item.save()
+    product.stock -= 1
+    product.save()
 
     return redirect('cart:cart_detail')
 
@@ -43,20 +47,33 @@ def cart_remove(request, product_id):
     if cart_item:
         if cart_item.quantity > 1:
             cart_item.quantity -= 1
+            product.stock += 1
             cart_item.save()
         else:
+            product.stock += cart_item.quantity
             cart_item.delete()
+        product.save()
 
     return redirect('cart:cart_detail')
 
 def full_remove(request, product_id):
     cart = Cart.objects.get(cart_id=_cart_id(request))
     product = get_object_or_404(Product, id=uuid.UUID(str(product_id)))
-    CartItem.objects.filter(product=product, cart=cart).delete()
+    cart_item =  CartItem.objects.filter(product=product, cart=cart).first()
+    if cart_item:
+        product.stock += cart_item.quantity
+        product.save()
+        cart_item.delete()
     return redirect('cart:cart_detail')
 
 def empty_cart(request):
-    Cart.objects.filter(cart_id=_cart_id(request)).delete()
+    cart = Cart.objects.filter(cart_id=_cart_id(request)).first()
+    if cart:
+        cart_items = CartItem.objects.filter(cart=cart)
+        for item in cart_items:
+            item.product.stock += item.quantity
+            item.product.save()
+        cart.delete()
     return redirect('/products/')
 
 def checkout(request):
@@ -65,7 +82,7 @@ def checkout(request):
         return redirect('cart:cart_detail')
 
     total = sum(item.quantity * item.product.price for item in cart_items)
-    order = Order.objects.create(total=total, emailAddress="test@example.com")
+    order = Order.objects.create(total=total, emailAddress=request.user.email)
     request.session['order_id'] = order.id
 
     return redirect('process_payment', order_id=order.id)

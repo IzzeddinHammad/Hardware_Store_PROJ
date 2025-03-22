@@ -13,7 +13,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     def products(self):
         return Product.objects.filter(category=self)
 
@@ -22,7 +22,7 @@ class Product(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    stock = models.PositiveIntegerField()
+    stock = models.PositiveIntegerField(default=0)
     image = models.ImageField(upload_to='products/', blank=True, null=True)
 
     vendor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='products')
