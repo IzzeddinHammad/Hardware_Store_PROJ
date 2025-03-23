@@ -6,3 +6,5 @@ django-allauth
 pyjwt
 cryptography
 django-jazzmin
+environs==9.5.0
+dj-database-url
