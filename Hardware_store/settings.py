@@ -30,6 +30,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -184,3 +186,105 @@ SOCIALACCOUNT_AUTO_SIGNUP = True
 
 SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_AUTO_SIGNUP = True
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Hardware Store",
+    "site_header": "Hardware Store",
+    "site_brand": "Hardware Store ",
+    # "site_icon": "images/favicon.ico",
+    # "site_logo": "images/logos/logo.jpg",
+    "welcome_sign": "Welcome To TU Dublin",
+    "copyright": "TU Dublin",
+    "user_avatar": "images/photos/logo.jpg",
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "order_with_respect_to": [
+        "store",
+        "store.product",
+        "store.cartorder",
+        "store.cartorderitem",
+        "store.cart",
+        "store.category",
+        "store.brand",
+        "store.productfaq",
+        "store.review",
+        "vendor.Coupon",
+        "vendor.DeliveryCouriers",
+        "accounts",
+        "accounts.user",
+        "accounts.profile",
+        "donations",
+        "blog",
+        'newsfeed',
+        "contacts",
+        "addon",
+    ],
+    "icons": {
+        "admin.LogEntry": "fas fa-file",
+
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+
+        "accounts.User": "fas fa-user",
+        "accounts.Profile":"fas fa-address-card",
+
+        "donations.Donation": "fas fa-hand-holding-usd",
+        "donations.Payment": "fas fa-credit-card",
+
+        "newsfeed.Newsletter": "fas fa-envelope",
+        "newsfeed.SubscribedUser": "fas fa-at",
+
+        "newsfeed.SubscribedUser": "fas fa-at",
+
+        "contacts.Inquiry": "fas fa-phone",
+        "addon.BasicAddon": "fas fa-cog",
+
+        "store.Product": "fas fa-th",
+        "store.CartOrder":"fas fa-shopping-cart",
+        "store.Cart":"fas fa-cart-plus",
+        "store.CartOrderItem":"fas fa-shopping-basket",
+        "store.Brand":"fas fa-check-circle",
+        "store.productfaq":"fas fa-question",
+        "store.Review":"fas fa-star fa-beat",
+        "store.Category":"fas fa-tag",
+        "store.Tag":"fas fa-tag",
+        "store.Notification":"fas fa-bell",
+        
+        "customer.Address":"fas fa-location-arrow",
+        "customer.Wishlist":"fas fa-heart",
+
+        "vendor.DeliveryCouriers":"fas fa-truck",
+        "vendor.Coupon":"fas fa-percentage",
+        "vendor.Vendor":"fas fa-store",
+        "vendor.Notification":"fas fa-bell",
+        "vendor.PayoutTracker":"fas fa-wallet",
+        "vendor.ChatMessage":"fas fa-envelope",
+
+        "addons.BecomeAVendor":"fas fa-user-plus",
+        "addons.AboutUS":"fas fa-users",
+        "addons.Company":"fas fa-university",
+        "addons.BasicAddon":"fas fa-cog",
+    },
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-arrow-circle-right",
+    "related_modal_active": False,
+    
+    "custom_js": None,
+    "show_ui_builder": True,
+    
+    "changeform_format": "horizontal_tabs",
+    "changeform_format_overrides": {
+        "auth.user": "collapsible",
+        "auth.group": "vertical_tabs",
+    },
+}
+
+
+customColorPalette = [
+    {"color": "hsl(4, 90%, 58%)", "label": "Red"},
+    {"color": "hsl(340, 82%, 52%)", "label": "Pink"},
+    {"color": "hsl(291, 64%, 42%)", "label": "Purple"},
+    {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"},
+    {"color": "hsl(231, 48%, 48%)", "label": "Indigo"},
+    {"color": "hsl(207, 90%, 54%)", "label": "Blue"},
+]
