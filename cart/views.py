@@ -8,6 +8,9 @@ from django.urls import reverse
 from order.models import Order, OrderItem
 from stripe.error import StripeError
 from django.core.exceptions import ObjectDoesNotExist
+from vouchers.models import Voucher 
+from vouchers.forms import VoucherApplyForm 
+from decimal import Decimal
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -37,7 +40,29 @@ def cart_detail(request):
     cart_items = CartItem.objects.filter(cart=cart, active=True) if cart else []
     total = sum(item.product.price * item.quantity for item in cart_items)
     counter = sum(item.quantity for item in cart_items)
-    return render(request, 'cart/cart.html', {'cart_items': cart_items, 'total': total, 'counter': counter})
+
+    discount = 0
+    voucher_id = 0
+    new_total = 0
+    voucher=None 
+
+    voucher_apply_form = VoucherApplyForm()
+
+
+    try: 
+        voucher_id = request.session.get('voucher_id')
+        voucher = Voucher.objects.get(id=voucher_id)
+        if voucher != None:
+            discount = (total*(voucher.discount/Decimal('100')))
+            new_total = (total - discount)
+            stripe_total = int(new_total * 100)
+    except:
+        ObjectDoesNotExist
+        pass
+
+    return render(request, 'cart/cart.html', {'cart_items': cart_items, 'total': total, 'counter': counter, 'voucher_apply_form': voucher_apply_form, 'new_total': new_total, 'voucher': voucher, 'discount':discount})
+
+
 
 def cart_remove(request, product_id):
     cart = Cart.objects.get(cart_id=_cart_id(request))

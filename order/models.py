@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
+from vouchers.models import Voucher
 
 class Order(models.Model):
     token = models.CharField(max_length=250, blank=True)
@@ -15,6 +17,15 @@ class Order(models.Model):
     shippingCity = models.CharField(max_length=250, blank=True)
     shippingPostcode = models.CharField(max_length=10, blank=True)
     shippingCountry = models.CharField(max_length=200, blank=True)
+
+    voucher = models.ForeignKey(Voucher, 
+                                related_name ='orders', 
+                                null=True,
+                                blank=True,
+                                on_delete =models.SET_NULL)
+    discount = models.IntegerField(default = 0, 
+                                   validators=[MinValueValidator(0),
+                                    MaxValueValidator(100)])
     stripe_charge_id = models.CharField(max_length=255, blank=True, null=True)
     is_paid = models.BooleanField(default=False)
 
