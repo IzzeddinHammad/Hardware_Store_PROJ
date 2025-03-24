@@ -15,15 +15,27 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path , include
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/',include('django.contrib.auth.urls')),
-    path('accounts/',include('accounts.urls')),
-    path('accounts/',include('allauth.urls')),
-    path('',include('store.urls')),
-    path('cart/', include('cart.urls')),
-    path('order/', include('order.urls')),
+    path('', include("store.urls")),
+    path('auth/', include("accounts.urls")),
+    path('customer/', include("customer.urls")),
+    path('vendor/', include("vendor.urls")),
+    path('blog/', include("blog.urls")),
+
+    path('password-reset/', auth_views.PasswordResetView.as_view(template_name='accounts/password/password_reset.html'), name='password_reset'),
+    path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='accounts/password/password_reset_done.html'), name='password_reset_done'),
+    path('password-reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='accounts/password/password_reset_confirmation.html'), name='password_reset_confirm'),
+    path('password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(template_name='accounts/password/password_reset_complete.html'), name='password_reset_complete'),
+
+
+    path("ckeditor5/", include('django_ckeditor_5.urls')),
 
 ]

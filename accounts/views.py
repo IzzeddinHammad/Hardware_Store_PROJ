@@ -1,79 +1,115 @@
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
-from django.views import generic
-from django.views.generic import UpdateView , DetailView , CreateView
-from .models import Profile , CustomUser
-from .forms import CustomUserCreationForm
-from django.contrib.auth.models import Group
-# Create your views here.
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
+
+from accounts import models as accounts_models
+from accounts import forms as accounts_forms
+from vendor import models as vendor_models
 
 
+def register_view(request):
+    if request.user.is_authenticated:
+        messages.warning(request, f"You are already logged in")
+        return redirect('/')   
 
+    form = accounts_forms.UserRegisterForm(request.POST or None)
 
+    if form.is_valid():
+        user = form.save()
 
+        full_name = form.cleaned_data.get('full_name')
+        email = form.cleaned_data.get('email')
+        mobile = form.cleaned_data.get('mobile')
+        password = form.cleaned_data.get('password1')
+        user_type = form.cleaned_data.get("user_type")
 
-class SignUpView(generic.CreateView):
-    model = CustomUser
-    form_class = CustomUserCreationForm
-    template_name = 'registration/signup.html'
-    success_url = reverse_lazy('login')
+        user = authenticate(email=email, password=password)
+        login(request, user)
 
-    def form_valid(self, form):
-        # Save the new user
-        response = super().form_valid(form)
+        messages.success(request, f"Account was created successfully.")
+        profile = accounts_models.Profile.objects.create(full_name = full_name, mobile = mobile, user=user)
+        if user_type == "Vendor":
+            vendor_models.Vendor.objects.create(user=user, store_name=full_name)
+            profile.user_type = "Vendor"
+        else:
+            profile.user_type = "Customer"
+        
+        profile.save()
 
-        # Add user to the Customer group by default
-        customer_group, created = Group.objects.get_or_create(name='Customer')
-        self.object.groups.add(customer_group)
+        next_url = request.GET.get("next", 'store:index')
+        return redirect(next_url)
+    
+    context = {
+        'form':form
+    }
+    return render(request, 'accounts/sign-up.html', context)
 
-        # If user chose to be a vendor, add them to Vendor group as well
-        if form.cleaned_data.get('is_vendor'):
-            vendor_group, created = Group.objects.get_or_create(name='Vendor')
-            self.object.groups.add(vendor_group)
+def login_view(request):
+    if request.user.is_authenticated:
+        messages.warning(request, "You are already logged in")
+        return redirect('store:index')
+    
+    if request.method == 'POST':
+        form = accounts_forms.LoginForm(request.POST)  
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            captcha_verified = form.cleaned_data.get('captcha', False)  
 
-        return response
+            if captcha_verified:
+                try:
+                    user_instance = accounts_models.User.objects.get(email=email, is_active=True)
+                    user_authenticate = authenticate(request, email=email, password=password)
 
+                    if user_instance is not None:
+                        login(request, user_authenticate)
+                        messages.success(request, "You are Logged In")
+                        next_url = request.GET.get("next", 'store:index')
 
+                        print("next_url ========", next_url)
+                        if next_url == '/undefined/':
+                            return redirect('store:index')
+                        
+                        if next_url == 'undefined':
+                            return redirect('store:index')
 
-class VendorSignUpView(CreateView):
-    model = CustomUser
-    form_class = CustomUserCreationForm
-    template_name = 'registration/signup.html'
-    success_url = reverse_lazy('login')
-    def form_valid(self, form):
-    # Save the new user
-        response = super().form_valid(form)
+                        if next_url is None or not next_url.startswith('/'):
+                            return redirect('store:index')
 
-    # Add user to the Customer group
+                        return redirect(next_url)
 
-        customer_group, created = Group.objects.get_or_create(name='Vendor')
+                    else:
+                        messages.error(request, 'Username or password does not exist')
+                except accounts_models.User.DoesNotExist:
+                    messages.error(request, 'User does not exist')
+            else:
+                messages.error(request, 'Captcha verification failed. Please try again.')
 
-        self.object.groups.add(vendor_group)
+    else:
+        form = accounts_forms.LoginForm()  
 
-        return response # Redirect to success URL
+    return render(request, "accounts/sign-in.html", {'form': form})
 
+def logout_view(request):
+    if "cart_id" in request.session:
+        cart_id = request.session['cart_id']
+    else:
+        cart_id = None
+    logout(request)
+    request.session['cart_id'] = cart_id
+    messages.success(request, 'You have been logged out.')
+    return redirect("accounts:sign-in")
 
+def handler404(request, exception, *args, **kwargs):
+    context = {}
+    response = render(request, 'accounts/404.html', context)
+    response.status_code = 404
+    return response
 
+def handler500(request, *args, **kwargs):
+    context = {}
+    response = render(request, 'accounts/500.html', context)
+    response.status_code = 500
+    return response
 
-
-
-class ProfileEditView(UpdateView):
-    model = Profile
-    template_name = 'registration/edit_profile.html'
-    fields = ['date_of_birth']  # Add any other fields you want to edit
-
-
-class ProfilePageView(DetailView):
-    model = Profile
-    template_name = 'registration/user_profile.html'
-    context_object_name = 'profile'  # This makes the profile accessible in the template
-
-
-class ProfileCreateView(CreateView):
-    model = Profile
-    template_name = 'registration/create_profile.html'
-    fields = ['date_of_birth']
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
