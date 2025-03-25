@@ -1,0 +1,149 @@
+{% extends 'vendor/base.html' %} {% load static %} {% load humanize %} {% block content %}
+<section class="middle">
+    <div class="container-fluid">
+        <div class="row align-items-start justify-content-between">
+            {% include 'vendor/sidebar.html' %}
+
+            <div class="col-12 col-md-12 col-lg-9 col-xl-10">
+                <h4 class="mb-0 mb-4 fw-bold">Reviews ({{reviews_list.count}})</h4>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form class="row mb-4 gx-2" method="GET">
+                            
+                            <div class="col-lg-5 col-md-3 col-12 mb-2 mb-lg-0">
+                                <select name="rating" class="form-select">
+                                    <option value="">Rating</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-md-3 col-12 mb-2 mb-lg-0">
+                                <!-- Custom select -->
+                                <select name="date" class="form-select">
+                                    <option value="">Sort by</option>
+                                    <option value="-date">Newest</option>
+                                    <option value="date">Oldest</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-1 col-md-3 col-12 mb-2 mb-lg-0">
+                                <button class="btn bg-primary text-white rounded btn-sm" type="submit"><i class="fas fa-search"></i></button>
+                            </div>
+                        </form>
+                        <!-- List group -->
+                        <ul class="list-group list-group-flush">
+                            
+                            {% for r in reviews %}
+                                <li class="list-group-item p-4 shadow rounded-3 mb-3">
+                                    <div class="d-flex">
+                                        <div class="ms-3 mt-2">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <div>
+                                                    <h4 class="mb-0 fw-bold">{{r.user.profile.full_name}}</h4>
+                                                    <span>{{r.date|date:"d M, Y"}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="mt-2">
+                                                <div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0 mt-3">
+                                                    {% if not r.rating  %}
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    {% elif r.rating > 0 and r.rating < 2 %}
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    {% elif r.rating > 1 and r.rating < 3 %}
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    {% elif r.rating > 2 and r.rating < 4 %}
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    {% elif r.rating > 3 and r.rating < 5 %}
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    {% elif r.rating > 4 %}
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    {% endif %}
+                                                </div>
+                                                <span class="ms-2 me-2">for</span>
+                                                <span class="h5">{{r.product.name}}</span>
+                                                <p class="mt-2">
+                                                    <span class="fw-bold me-2">Review <i class="fas fa-arrow-right"></i></span>
+                                                    {{r.review}}
+                                                </p>
+                                                <p class="mt-2">
+                                                    <span class="fw-bold me-2">Reply <i class="fas fa-arrow-right"></i></span>
+                                                    
+                                                    {% if r.reply %}
+                                                        {{r.reply}}
+                                                    {% else %}
+                                                        <span class="text-danger">No reply yet!</span>
+                                                    {% endif %}
+                                                        
+                                                </p>
+
+                                                <p>
+                                                    <button class="btn bg-primary text-white rounded btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{r.id}}" aria-expanded="false" aria-controls="collapse{{r.id}}">Respond <i class="fas fa-chevron-down ms-1"></i></button>
+                                                </p>
+                                                <div class="collapse" id="collapse{{r.id}}">
+                                                    <div class="card card-body">
+                                                        <form action="{% url 'vendor:update_reply' r.id %}" method="POST">
+                                                            {% csrf_token %}
+
+                                                            <div class="d-flex gap-2">
+                                                                <input type="text" class="form-control rounded" placeholder="Write response" name="reply" id="" />
+                                                                <button type="submit" class="btn bg-primary text-white rounded btn-sm"><i class="fas fa-paper-plane"></i></button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                                
+                        </ul>
+                    </div>
+                </div>
+
+                <nav>
+                    <ul class="pagination">
+                        {% if reviews.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ reviews.previous_page_number }}">Previous</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Previous</span>
+                            </li>
+                        {% endif %}
+
+                        {% for num in reviews.paginator.page_range %}
+                            <li class="page-item {% if reviews.number == num %}active{% endif %}">
+                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
+                        {% endfor %}
+
+                        {% if reviews.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ reviews.next_page_number }}">Next</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Next</span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

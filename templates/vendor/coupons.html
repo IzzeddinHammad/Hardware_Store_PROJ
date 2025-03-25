@@ -1,0 +1,108 @@
+{% extends 'vendor/base.html' %} {% load static %} {% load humanize %} {% block content %}
+<section class="middle">
+    <div class="container-fluid">
+        <div class="row align-items-start justify-content-between">
+            {% include 'vendor/sidebar.html' %}
+
+            <div class="col-12 col-md-12 col-lg-9 col-xl-10">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0 mb-4 fw-bold">Coupons ({{ coupons_list.count }})</h4>
+                    <button class="btn bg-primary rounded text-white btn-sm mb-5" data-bs-toggle="modal" data-bs-target="#createCouponModal"><i class="fas fa-add me-1"></i> Add Coupon</button>
+                </div>
+                <ul class="list-group list-group-flush">
+                   
+                   {% for c in coupons %}
+                        <li class="list-group-item p-4 shadow rounded-3 mb-3">
+                            <div class="d-flex">
+                                <div class="ms-3 mt-2">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <h4 class="mb-0 fw-bold">{{c.code}}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <p class="mt-2 mb-0">
+                                            <span class="me-2 fw-bold"> Discount: <span class="fw-light">{{c.discount}}% Discount</span> </span>
+                                        </p>
+                                        <form class="mt-3 d-flex align-items-center" action="{% url 'vendor:update_coupon' c.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <input type="text" class="form-control rounded" value="{{c.code}}" name="coupon_code" />
+                                            <button class="btn bg-primary text-white rounded btn-sm ms-2" type="submit"><i class="fas fa-save"></i></button>
+                                            <a href="{% url 'vendor:delete_coupon' c.id %}" class="btn bg-danger text-white btn-sm rounded ms-2"><i class="fas fa-trash"></i></a>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    {% empty %}
+                    <p>No coupons yet</p>
+                   {% endfor %}
+                    
+
+                </ul>
+
+                
+                {% if coupons %}
+                    <ul class="pagination">
+                        {% if coupons.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ coupons.previous_page_number }}">Previous</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Previous</span>
+                            </li>
+                        {% endif %}
+
+                        {% for num in coupons.paginator.page_range %}
+                            <li class="page-item {% if coupons.number == num %}active{% endif %}">
+                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
+                        {% endfor %}
+
+                        {% if coupons.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ coupons.next_page_number }}">Next</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Next</span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
+                    
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="createCouponModal" tabindex="-1" aria-labelledby="createCouponModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createCouponModalLabel">Create New Coupon</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'vendor:create_coupon' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="title" class="form-label"> Coupon Code *</label>
+                        <input type="text" id="review" class="form-control rounded" name="coupon_code" placeholder="CODE123" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="discount" class="form-label"> Discount * </label>
+                        <input type="number" id="review" class="form-control rounded" name="coupon_discount" placeholder="20%" required />
+                    </div>
+
+                    <button type="button" class="btn btn-sm bg-secondary rounded text-white" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-sm bg-primary rounded text-white">Create Coupon</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

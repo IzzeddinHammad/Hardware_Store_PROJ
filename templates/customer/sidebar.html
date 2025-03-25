@@ -1,0 +1,40 @@
+<div class="col-12 col-md-12 col-lg-4 col-xl-4 miliods">
+    <div class="d-block border p-2 rounded">
+        <div class="dashboard_author px-2 py-5">
+            <div class="dash_auth_thumb circle p-1 border d-inline-flex mx-auto mb-2">
+                <img src="{{request.user.profile.image.url}}" class="img-fluid circle" style="width: 100px; height: 100px; object-fit: cover;" alt="" />
+            </div>
+            <div class="dash_caption">
+                <h4 class="fs-md ft-medium mb-0 lh-1">{{request.user.profile.full_name}}</h4>
+                <span class="text-muted smalls">Customer ID: #{{request.user.id}}</span>
+            </div>
+        </div>
+
+        <div class="dashboard_author">
+            <h4 class="px-3 py-2 mb-0 lh-2 gray fs-sm ft-medium text-muted text-uppercase text-left">Dashboard Navigation</h4>
+            <ul class="dahs_navbar">
+                <li>
+                    <a href="{% url 'customer:dashboard' %}" class="{% if '/customer/dashboard/' in request.path %} active{% endif %}"><i class="bi bi-grid-fill me-2"></i>Dashboard</a>
+                </li>
+                <li>
+                    <a href="{% url 'customer:orders' %}" class="{% if '/customer/orders/' in request.path or '/customer/order_detail/' in request.path %} active{% endif %}"><i class="fas fa-shopping-basket me-2"></i>Orders</a>
+                </li>
+                <li>
+                    <a href="{% url 'customer:wishlist' %}" class="{% if '/customer/wishlist/' in request.path %} active{% endif %}"><i class="fas fa-heart me-2"></i>Wishlist</a>
+                </li>
+                <li>
+                    <a href="{% url 'customer:addresses' %}" class="{% if '/customer/addresses/' in request.path or '/customer/address_detail/' in request.path or '/customer/address_create/' in request.path %} active {% endif %}"><i class="fas fa-map-marker me-2"></i>Address</a>
+                </li>
+                <li>
+                    <a href="{% url 'customer:addresses' %}" class="{% if '/customer/addresses/' in request.path or '/customer/address_detail/' in request.path or '/customer/address_create/' in request.path %} active {% endif %}"><i class="fas fa-map-marker me-2"></i>Address</a>
+                </li>
+                <li>
+                    <a href="{% url 'customer:profile' %}" class="{% if '/customer/profile/' in request.path %} active{% endif %}"><i class="fas fa-user me-2"></i>Profile</a>
+                </li>
+                <li>
+                    <a href="{% url 'accounts:sign-out' %}"><i class="fas fa-power-off me-2"></i>Log Out</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

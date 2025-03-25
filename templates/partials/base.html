@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="author" content="Ecommerce" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Hardware</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+        <link href="{% static 'assets/css/styles.css' %}" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    </head>
+
+    <body>
+        <div id="main-wrapper">
+            <div class="header header-dark dark-text">
+                <div class="container">
+                    <nav id="navigation" class="navigation navigation-landscape">
+                        <div class="nav-header">
+                            <a class="nav-brand" href="{% url 'store:index' %}">
+                                <img style="width: 170px; object-fit: contain;" src="{% static 'assets/img/logo.png' %}" class="logo" alt="" />
+                            </a>
+                            <div class="nav-toggle"></div>
+                            <div class="mobile_nav">
+                                <ul>
+                                    <li>
+                                        <a href="#"><i class="fas fa-search-alt"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fas fa-user"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"> <i class="fas fa-heart text-white"></i><span class="dn-counter">2</span> </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'store:cart' %}"> <i class="fas fa-shopping-basket"></i><span class="dn-counter total_cart_items">{{total_cart_items}}</span> </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="nav-menus-wrapper" style="transition-property: none">
+                            <ul class="nav-menu">
+                                <li><a href="/">Home</a></li>
+                                <li>
+                                    <a href="{% url 'store:shop' %}">Shop</a>
+                                </li>
+                                 <li>
+                                    <a href="javascript:void(0);">Category</a>
+                                    <ul class="nav-dropdown nav-submenu">
+                                        
+                                        {% for c in category_ %}
+                                            <li><a href="{% url 'store:category' c.id %}">{{c.title}}</a></li>
+                                        {% endfor %}
+                                            
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);">Vendor</a>
+                                    <ul class="nav-dropdown nav-submenu">
+                                        <li><a href="{% url 'vendor:dashboard' %}">Dashboard</a></li>
+                                        <li><a href="{% url 'vendor:products' %}">Products</a></li>
+                                        <li><a href="{% url 'vendor:create_product' %}">Create Product</a></li>
+                                        <li><a href="{% url 'vendor:orders' %}">Orders</a></li>
+                                        <li><a href="{% url 'vendor:coupons' %}">Coupons</a></li>
+                                        <li><a href="{% url 'vendor:notis' %}">Notifications</a></li>
+                                        <li><a href="{% url 'vendor:reviews' %}">Reviews</a></li>
+                                        <li><a href="{% url 'vendor:notis' %}">Notis</a></li>
+                                        <li><a href="{% url 'vendor:profile' %}">Profile</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);">Customer</a>
+                                    <ul class="nav-dropdown nav-submenu">
+                                        <li><a href="{% url 'customer:dashboard' %}">Dashboard</a></li>
+                                        <li><a href="{% url 'customer:orders' %}">Orders</a></li>
+                                        <li><a href="{% url 'customer:wishlist' %}">Wishlist</a></li>
+                                        <li><a href="{% url 'customer:addresses' %}">Address</a></li>
+                                        <li><a href="{% url 'customer:notis' %}">Notifications</a></li>
+                                        <li><a href="{% url 'customer:profile' %}">Profile</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);">Pages</a>
+                                    <ul class="nav-dropdown nav-submenu">
+                                        <li><a href="{% url 'blog:blog_list' %}">Blog</a></li>
+                                        <li><a href="{% url 'store:about' %}">About Us</a></li>
+                                        <li><a href="{% url 'store:contact' %}">Contact</a></li>
+                                        <li><a href="{% url 'store:faqs' %}">FAQs</a></li>
+                                        <li><a href="{% url 'store:privacy_policy' %}">Privacy Policy</a></li>
+                                        <li><a href="{% url 'store:terms_conditions' %}">Terms and Conditions</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="{% url 'store:order_tracker_page' %}">Track Order <i class="fas fa-truck ms-1"></i></a>
+                                </li>
+                            </ul>
+
+                            <ul class="nav-menu nav-menu-social align-to-right">
+                                <li>
+                                    <a href="{% url 'store:shop' %}"><i class="fas fa-search text-white"></i></a>
+                                </li>
+                               
+                               {% if request.user.is_authenticated %}
+                                     <li>
+                                        <a href="{% url 'customer:dashboard' %}"><i class="fas fa-user text-white"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'customer:wishlist' %}"><i class="fas fa-heart text-white"></i><span class="dn-counter">{{ wishlist_count.count }}</span> </a>
+                                    </li>
+                               {% endif %}
+                                
+                                <li>
+                                    <a href="{% url 'store:cart' %}"><i class="fas fa-shopping-basket text-white"></i><span class="dn-counter total_cart_items">{{total_cart_items}}</span> </a>
+                                </li>
+                                
+                                {% if request.user.is_authenticated %}
+                                    
+                                    <li>
+                                        <a href="{% url 'accounts:sign-out' %}" class="btn bg-primary py-2 px-4 rounded text-white"><i class="fas fa-sign-out-alt me-1"></i> Sign Out </a>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <a href="{% url 'accounts:sign-in' %}" class="btn bg-primary py-2 px-4 rounded text-white">Sign In <i class="fas fa-sign-in-alt ms-1"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'accounts:sign-up' %}" class="btn bg-primary py-2 px-4 rounded text-white">Sign Up <i class="fas fa-user-plus ms-1"></i></a>
+                                    </li>
+                                {% endif %}
+                                    
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+
+           
+           {% for message in messages %}
+                <div class="alert alert-{{message.tags}} alert-dismissible fade show text-center" role="alert">
+                    <strong>{{message}}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+           {% endfor %}
+            
+
+            {% block content %} {% endblock content %}
+
+            <footer class="dark-footer skin-dark-footer" style="margin-top: 500px">
+                <div class="footer-middle">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-3 col-sm-12">
+                                <div class="footer_widget">
+                                    <img src="{% static 'assets/img/logo-light.png' %}" class="img-footer small mb-2" alt="" />
+
+                                    <div class="address mt-3">Technological University Dublin <br />Dublin 24, D24 FKT9, Ireland</div>
+                                    <div class="address mt-3">+353874017490<br />inbox@olehkravets.com</div>
+                                    <div class="address mt-3">
+                                        <ul class="list-inline">
+                                            <li class="list-inline-item">
+                                                <a href="#"><i class="fab fa-facebook"></i></a>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-lg-4 col-md-2 col-sm-12">
+                                <div class="footer_widget">
+                                    <h4 class="widget_title">Supports</h4>
+                                    <ul class="footer-menu">
+                                        <li><a href="#">Contact Us</a></li>
+                                        <li><a href="#">About Page</a></li>
+                                        <li><a href="#">FAQ's Page</a></li>
+                                        <li><a href="#">Privacy Policy</a></li>
+                                        <li><a href="#">Terms and Conditions</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-lg-4 col-md-3 col-sm-12">
+                                <div class="footer_widget">
+                                    <h4 class="widget_title">Subscribe</h4>
+                                    <p>Receive updates, hot deals, discounts sent straignt in your inbox daily</p>
+                                    <div class="foot-news-last">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Email Address" />
+                                            <div class="input-group-append">
+                                                <button type="button" class="input-group-text b-0 text-light"><i class="fas fa-arrow-right"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+        <script src="{% static 'assets/js/popper.min.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'assets/js/ion.rangeSlider.min.js' %}"></script>
+        <script src="{% static 'assets/js/slick.js' %}"></script>
+        <script src="{% static 'assets/js/slider-bg.js' %}"></script>
+        <script src="{% static 'assets/js/lightbox.js' %}"></script>
+        <script src="{% static 'assets/js/smoothproducts.js' %}"></script>
+        <script src="{% static 'assets/js/snackbar.min.js' %}"></script>
+        <script src="{% static 'assets/js/jQuery.style.switcher.js' %}"></script>
+        <script src="{% static 'assets/js/custom.js' %}"></script>
+        <script src="{% static 'assets/js/function.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    </body>
+</html>

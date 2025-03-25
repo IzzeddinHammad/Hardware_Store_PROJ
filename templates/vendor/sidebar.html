@@ -1,0 +1,35 @@
+<div class="col-12 col-md-12 col-lg-3 col-xl-2 miliods">
+    <div class="d-block border rounded header-dark">
+        <div class="dashboard_author">
+            <ul class="dahs_navbar">
+                <li>
+                    <a href="{% url 'vendor:dashboard' %}" class="{% if '/vendor/dashboard/' in request.path %} active {% endif %}"><i class="bi bi-grid-fill me-2"></i>Dashboard</a>
+                </li>
+                <li>
+                    <a href="{% url 'vendor:products' %}"  class="{% if '/vendor/products/' in request.path %} active {% endif %}"><i class="bi bi-grid-1x2-fill me-2"></i>Products</a>
+                </li>
+                <li>
+                    <a href="{% url 'vendor:create_product' %}"><i class="fas fa-plus-circle me-2"></i>Create Product</a>
+                </li>
+                <li>
+                    <a href="{% url 'vendor:orders' %}" class="{% if '/vendor/orders/' in request.path or '/vendor/order_detail/' in request.path %} active {% endif %}"><i class="fas fa-shopping-cart me-2"></i>Orders</a>
+                </li>
+                <li>
+                    <a href="{% url 'vendor:coupons' %}" class="{% if '/vendor/coupons/' in request.path %} active {% endif %}"><i class="fas fa-tag me-2"></i>Coupons</a>
+                </li>
+                <li>
+                    <a href="{% url 'vendor:reviews' %}" class="{% if '/vendor/reviews/' in request.path %} active {% endif %}"><i class="fas fa-star me-2"></i>Reviews</a>
+                </li>
+                <li>
+                    <a href="{% url 'vendor:notis' %}" class="{% if '/vendor/notis/' in request.path %} active {% endif %}"><i class="fas fa-bell me-2"></i>Notifications</a>
+                </li>
+                <li>
+                    <a href="{% url 'vendor:profile' %}" class="{% if '/vendor/profile/' in request.path %} active {% endif %}"><i class="fas fa-user me-2"></i>Profile</a>
+                </li>
+                <li>
+                    <a href="{% url 'accounts:sign-out' %}"><i class="fas fa-power-off me-2"></i>Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,112 @@
+{% extends 'partials/base.html' %} {% load static %} {% load humanize %} {% block content %}
+<div class="gray py-3">
+    <div class="container">
+        <div class="row">
+            <div class="colxl-12 col-lg-12 col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">FAQ's</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="middle">
+    <div class="container">
+    
+        <div class="row justify-content-center">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div class="sec_title position-relative text-center">
+                    <h3 class="ft-bold pt-3">Frequently Asked Questions</h3>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row align-items-center justify-content-between">
+            <div class="col-xl-12 ">
+                
+                <div class="d-block position-relative border rounded py-3 px-3 mb-4">
+                    <h4 class="ft-medium">Orders:</h4>
+                    <div id="accordion" class="accordion">
+                        <div class="card">
+                            <div class="card-header" id="h1">
+                                <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#ord1" aria-expanded="true" aria-controls="ord1">
+                                    Are there multuple payment methods?
+                                </button>
+                                </h5>
+                            </div>
+
+                            <div id="ord1" class="collapse show" aria-labelledby="h1" data-parent="#accordion">
+                                <div class="card-body">
+                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni incidunt vitae error, ad at sapiente nihil quae enim debitis impedit explicabo facere architecto accusamus qui labore placeat quisquam officiis inventore eos eligendi tempore eum est? Cupiditate quae blanditiis optio similique.                                
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="h2">
+                                <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#ord2" aria-expanded="false" aria-controls="ord2">
+                                    Can I track Orders
+                                </button>
+                                </h5>
+                            </div>
+                            <div id="ord2" class="collapse" aria-labelledby="h2" data-parent="#accordion">
+                                <div class="card-body">
+                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni incidunt vitae error, ad at sapiente nihil quae enim debitis impedit explicabo facere architecto accusamus qui labore placeat quisquam officiis inventore eos eligendi tempore eum est? Cupiditate quae blanditiis optio similique.                                
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="h3">
+                                <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#ord3" aria-expanded="false" aria-controls="ord3">
+                                    Can I use coupons and discounts?
+                                </button>
+                                </h5>
+                            </div>
+                            <div id="ord3" class="collapse" aria-labelledby="h3" data-parent="#accordion">
+                                <div class="card-body">
+                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni incidunt vitae error, ad at sapiente nihil quae enim debitis impedit explicabo facere architecto accusamus qui labore placeat quisquam officiis inventore eos eligendi tempore eum est? Cupiditate quae blanditiis optio similique.                                
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="h4">
+                                <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#ord4" aria-expanded="false" aria-controls="ord4">
+                                    Can I track my orders?
+                                </button>
+                                </h5>
+                            </div>
+                            <div id="ord4" class="collapse" aria-labelledby="h4" data-parent="#accordion">
+                                <div class="card-body">
+                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni incidunt vitae error, ad at sapiente nihil quae enim debitis impedit explicabo facere architecto accusamus qui labore placeat quisquam officiis inventore eos eligendi tempore eum est? Cupiditate quae blanditiis optio similique.                                
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="h5">
+                                <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#ord5" aria-expanded="false" aria-controls="ord5">
+                                    Are there secure checkouts?
+                                </button>
+                                </h5>
+                            </div>
+                            <div id="ord5" class="collapse" aria-labelledby="h5" data-parent="#accordion">
+                                <div class="card-body">
+                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni incidunt vitae error, ad at sapiente nihil quae enim debitis impedit explicabo facere architecto accusamus qui labore placeat quisquam officiis inventore eos eligendi tempore eum est? Cupiditate quae blanditiis optio similique.                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

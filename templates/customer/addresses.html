@@ -1,0 +1,69 @@
+{% extends 'partials/base.html' %} {% load static %} {% load humanize %} {% block content %}
+
+<div class="gray py-3">
+    <div class="container">
+        <div class="row">
+            <div class="colxl-12 col-lg-12 col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Customer</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Address</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="middle">
+    <div class="container">
+        <div class="row align-items-start justify-content-between">
+            {% include 'customer/sidebar.html' %}
+
+
+            <div class="col-12 col-md-12 col-lg-8 col-xl-8">
+                <div class="mb-4 d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 mb-2 fw-bold">Address</h4>
+                    <div>
+                        <a href="{% url 'customer:address_create' %}" class="btn btn-sm text-white bg-primary small rounded ft-medium">Create Address <i class="fas fa-plus ms-1"></i></a>
+                    </div>
+                </div>
+
+                <div class="row align-items-start">
+                    {% for address in addresses %}
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                            <div class="card-wrap border rounded mb-4">
+                                <div class="card-wrap-header px-3 py-2 br-bottom d-flex align-items-center justify-content-between">
+                                    <div class="card-heafder-flex">
+                                        <h4 class="fs-md ft-bold mb-1">Shipping Address</h4>
+                                        <div class="">
+                                            <div class="">
+                                                <a href="{% url 'customer:address_detail' address.id %}" class="btn btn-sm text-white bg-primary small rounded ft-medium"><i class="fas fa-edit"></i></a>
+                                                <a href="{% url 'customer:delete_address' address.id %}" class="btn btn-sm text-white bg-danger small rounded ft-medium"><i class="fas fa-trash"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-wrap-body px-3 py-3">
+                                    <p class="mb-0"><span class="fw-bold">Full Name:</span> {{address.full_name}}</p>
+                                    <p class="mb-0"><span class="fw-bold">Email:</span> {{address.email}}</p>
+                                    <p class="mb-0"><span class="fw-bold">Mobile:</span> {{address.mobile}}</p>
+
+                                    <p class="mb-0"><span class="fw-bold">Address:</span> {{address.address}}</p>
+                                    <p class="mb-0"><span class="fw-bold">City:</span> {{address.city}}</p>
+                                    <p class="mb-0"><span class="fw-bold">State:</span> {{address.state}}</p>
+                                    <p class="mb-0"><span class="fw-bold">Country:</span> {{address.country}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                        
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

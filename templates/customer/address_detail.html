@@ -1,0 +1,101 @@
+{% extends 'partials/base.html' %} {% load static %} {% load humanize %} {% block content %}
+
+<div class="gray py-3">
+    <div class="container">
+        <div class="row">
+            <div class="colxl-12 col-lg-12 col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Customer</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Address Update</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="middle">
+    <div class="container">
+        <div class="row align-items-start justify-content-between">
+            {% include 'customer/sidebar.html' %}
+
+
+            <div class="col-12 col-md-12 col-lg-8 col-xl-8">
+                <div class="row mb-4">
+                    <h4 class="mb-0 mb-2 fw-bold">Update Address</h4>
+                </div>
+
+                <div class="col-xl-12">
+                    <div class="row align-items-center">
+                        <form class="row m-0" action="" method="POST">
+                            {% csrf_token %}
+                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                                <div class="form-group">
+                                    <label class="small text-dark ft-medium">Full Name</label>
+                                    <input type="text" name="full_name" class="form-control rounded" value="{{address.full_name}}" />
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                                <div class="form-group">
+                                    <label class="small text-dark ft-medium">Email</label>
+                                    <input type="text" name="email" class="form-control rounded" value="{{address.email}}" />
+                                </div>
+                            </div>
+                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                                <div class="form-group">
+                                    <label class="small text-dark ft-medium">Mobile</label>
+                                    <input type="text" name="mobile" class="form-control rounded" value="{{address.mobile}}" />
+                                </div>
+                            </div>
+                            
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                                <div class="form-group">
+                                    <label class="small text-dark ft-medium">Address</label>
+                                    <input type="text" name="address" class="form-control rounded" value="{{address.address}}" />
+                                </div>
+                            </div>
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                                <div class="form-group">
+                                    <label class="small text-dark ft-medium">City</label>
+                                    <input type="text" name="city" class="form-control rounded" value="{{address.city}}" />
+                                </div>
+                            </div>
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                                <div class="form-group">
+                                    <label class="small text-dark ft-medium">State</label>
+                                    <input type="text" name="state" class="form-control rounded" value="{{address.state}}" />
+                                </div>
+                            </div>
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                                <div class="form-group">
+                                    <label class="small text-dark ft-medium">Country</label>
+                                    <input type="text" name="country" class="form-control rounded" value="{{address.country}}" />
+                                </div>
+                            </div>
+
+                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                                <div class="form-group">
+                                    <label class="small text-dark ft-medium">Zip Code</label>
+                                    <input type="text" name="zip_code" class="form-control rounded" value="{{address.zip_code}}" />
+                                </div>
+                            </div>
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                <div class="form-group">
+                                    <a href="{% url 'customer:addresses' %}" class="btn bg-secondary text-white btn-sm rounded"> <i class="fas fa-arrow-left"></i> Go Back</a>
+                                    <button type="submit" class="btn bg-primary text-white btn-sm rounded">Save Changes <i class="fas fa-save ms-2"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

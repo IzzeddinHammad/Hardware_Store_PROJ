@@ -1,0 +1,180 @@
+{% extends 'partials/base.html' %} 
+{% load static %} 
+{% load humanize %} 
+{% block content %}
+	
+	<section class="middle">
+		<div class="container">
+			<h2 class="fw-bold mb-5">All Products (<span class="product_count">{{ products_list.count }}</span>)</h2>
+			<div class="mb-5 d-flex justify-content-between align-items-center gap-2">
+				<input type="text" class="form-control rounded search-filter" placeholder="Search Products..." name="search-filter" id="">
+				<button class="btn bg-primary text-white rounded "><i class="fas fa-search"></i></button>
+			</div>
+			<div class="row">
+				
+				<div class="col-lg-3">
+					<div class="border rounded p-3 mb-3">
+						<div>
+							<h4>Categories</h4>
+							<div>
+								{% for c in categories %}
+									<div class="mb-1 form-check d-flex justify-content-between align-items-center">
+										<div>
+											<input type="checkbox" class="form-check-input category-filter" value="{{c.id}}" id="category{{c.id}}">
+											<label class="form-check-label fs-6" for="category{{c.id}}">{{c.title}}</label>
+										</div>
+										<div>
+											<p class="mb-0">{{c.products.all.count}}</p>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+
+					
+
+					<div class="border rounded p-3 mb-3">
+						<div>
+							<h4>Price</h4>
+							<div  style="margin-left: -18px;">
+								{% for p in prices %}
+									<div class="mb-1 form-check">
+										<input type="radio" name="price-filter" value="{{p.id}}" class="form-check-input " id="{{p.id}}">
+										<label class="form-check-label fs-6" for="{{p.id}}">{{p.value}}</label>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+
+					<div class="border rounded p-3 mb-3">
+						<div>
+							<h4>Display</h4>
+							<div  style="margin-left: -18px;">
+								{% for i in item_display %}
+									<div class="mb-1 form-check">
+										<input type="radio" name="items-display" value="{{i.id}}" class="form-check-input items-display" id="display{{i.id}}">
+										<label class="form-check-label fs-6" for="display{{i.id}}">{{i.value}} Products</label>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+
+					<div class="border rounded p-3 mb-3">
+						<div>
+							<h4>Rating</h4>
+							<div>
+								
+								{% for r in ratings %}
+									<div class="mb-1 form-check d-flex justify-content-between align-items-center">
+										<div>
+											<input type="checkbox" class="form-check-input rating-filter" value="{{r.id}}" id="rating{{r.id}}">
+											<label class="form-check-label fs-6" for="rating{{r.id}}">{{r.value}}</label>
+										</div>
+									</div>
+								{% endfor %}
+									
+								
+							</div>
+						</div>
+					</div>
+
+					<div class="border rounded p-3 mb-3">
+						<div>
+							<h4>Categories</h4>
+							<div>
+								
+								{% for s in sizes %}
+									<div class="mb-1 form-check d-flex justify-content-between align-items-center">
+										<div>
+											<input type="checkbox" class="form-check-input size-filter" value="{{s.content}}" id="{{s.content}}">
+											<label class="form-check-label fs-6" for="{{s.content}}">{{s.title}}</label>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+
+
+					<div class="border rounded p-3 mb-3">
+						<div>
+							<h4>Colors</h4>
+							<div>
+								{% for c in colors %}
+									<div class="mb-1 form-check d-flex justify-content-between align-items-center">
+										<div class="d-flex align-items-center gap-2">
+											<input type="checkbox" class="form-check-input colors-filter" value="{{c.content}}" id="{{c.content}}" >
+											<label class="form-check-label fs-6 p-3 colors-filter" for="{{c.content}}" style="background-color: {{c.content}}; color: white; border-radius: 50%;"></label>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+
+					<button class="btn bg-primary btn-sm rounded reset_shop_filter_btn">Reset Filter <i class="fas fa-rotate ms-2"></i></button>
+				</div>				
+				<div class="col-lg-9"> 
+					<div class="row align-items-center rows-products" id="products-list">						
+						 
+						 {% for p in products %}
+							<div class="col-lg-4">
+								<div class="product_grid card b-0  rounded-3 shadow m-2 p-2">
+									<div class="card-body p-0">
+										<div class="shop_thumb position-relative">
+											<a class="card-img-top d-block overflow-hidden" href="{% url 'store:product_detail' p.slug %}"><img class="card-img-top" style="width: 100%; height: 230px; object-fit: cover;" src="{{p.image.url}}" alt="..." /></a>
+										</div>
+									</div>
+									<div class="card-footer b-0 p-0 pt-2 bg-white d-flex align-items-start justify-content-between">
+										<div class="text-left">
+											<div class="text-left">
+												<div class="elso_titl"><span class="small"><a href="{% url 'store:category' p.category.id %}">{{p.category.title}}</a></span></div>
+												<h5 class="fs-md mb-0 lh-1 mb-1"><a href="{% url 'store:product_detail' p.slug %}">{{p.name}}</a></h5>
+												  <div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0 mt-3">
+													{% if not p.average_rating  %}
+													<i class="fas fa-star text-warning"></i>
+													{% elif p.average_rating > 0 and p.average_rating < 2 %}
+													<i class="fas fa-star text-warning"></i>
+													{% elif p.average_rating > 1 and p.average_rating < 3 %}
+													<i class="fas fa-star text-warning"></i>
+													<i class="fas fa-star text-warning"></i>
+													{% elif p.average_rating > 2 and p.average_rating < 4 %}
+													<i class="fas fa-star text-warning"></i>
+													<i class="fas fa-star text-warning"></i>
+													<i class="fas fa-star text-warning"></i>
+													{% elif p.average_rating > 3 and p.average_rating < 5 %}
+													<i class="fas fa-star text-warning"></i>
+													<i class="fas fa-star text-warning"></i>
+													<i class="fas fa-star text-warning"></i>
+													<i class="fas fa-star text-warning"></i>
+													{% elif p.average_rating > 4 %}
+													<i class="fas fa-star text-warning"></i>
+													<i class="fas fa-star text-warning"></i>
+													<i class="fas fa-star text-warning"></i>
+													<i class="fas fa-star text-warning"></i>
+													<i class="fas fa-star text-warning"></i>
+													{% endif %}
+												</div>
+												<div class="elis_rty"><span class="ft-bold text-dark fs-sm">${{p.price}}</span></div>
+											</div>
+											<div class="d-flex align-items-center gap-3">
+												<button type="button" class="btn btn-sm bg-primary text-white rounded add_to_cart" data-id="{{p.id}}">Add to cart <i class="fas fa-shopping-cart ms-2"></i></button>
+												<a href="#" class="me-2 add_to_wishlist" data-product_id="{{p.id}}"><i class="fas fa-heart fs-4 text-dark"></i></a>
+                                        		<input type="hidden" class="quantity" value="1" name="" id="">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						 {% endfor %}
+							
+					</div>
+				</div>				
+			</div>
+		</div>
+	</section>
+
+{% endblock content %}

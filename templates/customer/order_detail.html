@@ -1,0 +1,113 @@
+
+{% extends 'partials/base.html' %} {% load static %} {% load humanize %} {% block content %}
+
+
+<div class="gray py-3">
+    <div class="container">
+        <div class="row">
+            <div class="colxl-12 col-lg-12 col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Customer</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Order #334564</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="middle">
+    <div class="container">
+        <div class="row align-items-start justify-content-between">
+            {% include 'customer/sidebar.html' %}
+
+
+            <div class="col-12 col-md-12 col-lg-8 col-xl-8">
+                <div class="row mb-4">
+                    <h4 class="mb-0 mb-2 fw-bold">Order Number: #{{order.order_id}}</h4>
+                </div>
+
+                <div class="order-data">
+                    <div class="ord_list_wrap border mb-4 mfliud">
+                        <div class="ord_list_body text-left">
+                            {% for item in order.order_items.all %}
+                                <div class="row align-items-center justify-content-center m-0 py-4 br-bottom">
+                                    <div class="col-xl-6 col-lg-5 col-md-5 col-12">
+                                        <div class="cart_single d-flex align-items-start mfliud-bot gap-3">
+                                            <div class="cart_selected_single_thumb">
+                                                <a href="{% url 'store:product_detail' item.product.slug %}"><img src="{{item.product.image.url}}" width="75" class="img-fluid rounded" alt="" /></a>
+                                            </div>
+                                            <div class="cart_single_caption pl-3">
+                                                <h4 class="product_title fs-sm ft-medium mb-1 lh-1"> <a href="{% url 'store:product_detail' item.product.slug %}">{{item.product.name}}</a></h4>
+                                                <p class="mb-2">
+                                                    <span class="text-dark medium">Vendor: {{item.product.vendor.profile.full_name}}</span> <br />
+                                                    
+                                                    {% if item.color %}
+                                                        <span class="text-dark medium">Color: {{item.color}}</span>
+                                                    {% endif %}
+
+                                                    {% if item.size %}
+                                                        <span class="text-dark medium">Size: {{item.size}}</span>
+                                                    {% endif %}
+                                                        
+                                                </p>
+                                                <h4 class="fs-sm ft-bold mb-0 lh-1">${{item.price}}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-2 col-lg-3 col-md-3 col-6">
+                                        <p class="mb-1 p-0"><span class="text-muted">Shipping Status</span></p>
+                                        <div class="delv_status"><span class="ft-medium small text-dark bg-light rounded px-3 py-1">{{item.order_status}}</span></div>
+                                    </div>
+                                    <div class="col-xl-2 col-lg-3 col-md-3 col-6">
+                                        <p class="mb-1 p-0"><span class="text-muted">Payment Status</span></p>
+                                        <h6 class="mb-0 ft-medium fs-sm">{{order.payment_status}}</h6>
+                                    </div>
+                                    <div class="col-xl-2 col-lg-3 col-md-3 col-6">
+                                        <a href="{% url 'customer:order_item_detail' order.order_id item.item_id %}" class="btn bg-primary btn-sm text-white rounded"><i class="fas fa-eye"></i></a>
+                                    </div>
+                                    
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <h4 class="mt-5 mb-2 fw-bold">Order Summary</h4>
+                    <div class="">
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Date:</span> {{order.date}}</h5>
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Sub-total:</span> ${{order.sub_total|intcomma}}</h5>
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Shipping:</span> ${{order.shipping|intcomma}}</h5>
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Tax:</span> ${{order.tax}}</h5>
+                        
+                        {% if order.saved %}
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Discount:</span> -${{order.saved|intcomma}}</h5>
+                        {% endif %}
+                        
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Total:</span> ${{order.total|intcomma}}</h5>
+                    </div>
+
+                    <h4 class="mt-5 mb-2 fw-bold">Bio Data</h4>
+                    <div class="">
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Full Name:</span> {{order.address.full_name}}</h5>
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Email:</span> {{order.address.email}}</h5>
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Mobile:</span> {{order.address.mobile}}</h5>
+                    </div>
+
+                    <h4 class="mt-5 mb-2 fw-bold">Shipping Details</h4>
+                    <div class="">
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Address:</span> {{order.address.address}}</h5>
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">City:</span> {{order.address.city}}</h5>
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">State:</span> {{order.address.state}}</h5>
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Country:</span> {{order.address.country}}</h5>
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Zip:</span> {{order.address.zip_code}}</h5>
+                    </div>
+                </div>
+                <a href="" class="btn bg-primary rounded btn-sm text-white mt-5">Contact Support <i class="fas fa-phone ms-2"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

@@ -1,0 +1,108 @@
+{% load static %}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="author" content="Ecommerce" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hardware</title>
+    <link href="{% static 'assets/css/styles.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+</head>
+
+<div class="header header-dark dark-text">
+    <div class="container-fluid">
+        <nav id="navigation" class="navigation navigation-landscape">
+            <div class="nav-header">
+                <a class="nav-brand" href="{% url 'store:index' %}">
+                    <img src="{% static '/assets/img/logo.png' %}" class="logo" alt="" />
+                </a>
+                <div class="nav-toggle"></div>
+                <div class="mobile_nav">
+                    <ul>
+                        <li>
+                            <a href="#"><i class="fas fa-search-alt"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fas fa-user"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="fas fa-heart text-white"></i><span class="dn-counter">2</span> </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="fas fa-shopping-basket"></i><span class="dn-counter">0</span> </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="nav-menus-wrapper mt-2" style="transition-property: none">
+                <ul class="nav-menu">
+                    <li>
+                        <a href="{% url 'vendor:dashboard' %}">Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'vendor:products' %}">Products</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'vendor:create_product' %}">Create Product</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'vendor:orders' %}">Orders</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'vendor:coupons' %}">Coupons</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'vendor:reviews' %}">Reviews</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'vendor:notis' %}">Notifications</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'vendor:profile' %}">Profile</a>
+                    </li>
+                </ul>
+
+                <ul class="nav-menu nav-menu-social align-to-right">
+                    <li>
+                        <a href="{% url 'vendor:create_product' %}" class="btn bg-primary py-2 px-4 rounded text-white"> Create Product <i class="fas fa-edit"></i></a>
+                    </li>
+                     <li>
+                        <a href="{% url 'accounts:sign-out' %}" class="btn bg-danger py-2 px-4 rounded text-white"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+
+
+      
+           {% for message in messages %}
+                <div class="alert alert-{{message.tags}} alert-dismissible fade show text-center" role="alert">
+                    <strong>{{message}}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+           {% endfor %}
+
+
+{% block content %}
+    
+{% endblock content %}
+    
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="{% static 'assets/js/ion.rangeSlider.min.js' %}"></script>
+<script src="{% static 'assets/js/slick.js' %}"></script>
+<script src="{% static 'assets/js/slider-bg.js' %}"></script>
+<script src="{% static 'assets/js/lightbox.js' %}"></script>
+<script src="{% static 'assets/js/smoothproducts.js' %}"></script>
+<script src="{% static 'assets/js/snackbar.min.js' %}"></script>
+<script src="{% static 'assets/js/jQuery.style.switcher.js' %}"></script>
+<script src="{% static 'assets/js/custom.js' %}"></script>

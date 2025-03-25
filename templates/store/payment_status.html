@@ -1,0 +1,58 @@
+{% extends 'partials/base.html' %} {% load static %} {% load humanize %} {% block content %}
+
+<div class="gray py-3">
+    <div class="container">
+        <div class="row">
+            <div class="colxl-12 col-lg-12 col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/shop.html">Shop</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'store:cart' %}">Cart</a></li>
+                        <li class="breadcrumb-item"><a href="/checkout.html">Checkout</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Payment Status</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="middle" style="margin-bottom: 600px;">
+    <div class="container">
+        <div class="row justify-content-center">
+            
+        </div>
+        <div class="row justify-content-center">
+            
+            <div class="col-12 col-md-10 col-lg-12 col-xl-12 text-center">
+                {% if payment_status == "paid" %}
+                    <!-- Icon -->
+                    <div class="p-4 d-inline-flex align-items-center justify-content-center circle bg-light-primary text-success mx-auto mb-4"><i class="fas fa-heart fs-lg"></i></div>
+                    <!-- Heading -->
+                    <h2 class="mb-2 ft-bold">Order Completed!</h2>
+                    <!-- Text -->
+                    <p class="ft-regular fs-md mb-5">Your order <span class="text-body text-dark fw-bold">#{{order.order_id}}</span> has been completed. <br> we have sent the order details to your email.</p>
+                    <!-- Button -->
+                    <a href="{% url 'customer:order_detail' order.order_id %}" class="btn btn-sm rounded text-white bg-success">View Orders</a>
+                {% endif %}
+            </div>
+
+            <div class="col-12 col-md-10 col-lg-8 col-xl-6 text-center">
+                    {% if payment_status == "failed" %}
+                        <!-- Icon -->
+                        <div class="p-4 d-inline-flex align-items-center justify-content-center circle bg-light-danger text-danger mx-auto mb-4"><i class="fas fa-ban fs-lg"></i></div>
+                        <!-- Heading -->
+                        <h2 class="mb-2 ft-bold">Order Payment Failed!</h2>
+                        <!-- Text -->
+                        <p class="ft-regular fs-md mb-5">Your order couldn't be completed, try again later.</p>
+                        <!-- Button -->
+                        <a href="" class="btn btn-sm rounded text-white bg-danger">Try Again <i class="fas fa-rotate ms-2"></i></a>
+                    {% endif %}
+            </div>
+                
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

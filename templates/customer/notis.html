@@ -1,0 +1,85 @@
+{% extends 'partials/base.html' %} {% load static %} {% load humanize %} {% block content %}
+
+<div class="gray py-3">
+    <div class="container">
+        <div class="row">
+            <div class="colxl-12 col-lg-12 col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Customer</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Notification</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="middle">
+    <div class="container">
+        <div class="row align-items-start justify-content-between">
+            {% include 'customer/sidebar.html' %}
+
+
+            <div class="col-12 col-md-12 col-lg-8 col-xl-8">
+                <h4 class="mb-0 mb-4 fw-bold">Notifications ({{notis_list.count}} Unread)</h4>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            
+                            {% for n in notis %}
+                                <li class="list-group-item p-4 shadow rounded-3 mb-3">
+                                    <div class="d-flex">
+                                        <div class="ms-3 mt-2">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <div>
+                                                    <h4 class="mb-3 fw-bold">{{n.type}}</h4>
+                                                    <p class="mb-0 mt-0">Date: {{n.date}}</p>
+                                                    <p class="mb-0 mt-0">Product: {{n.order.product.name}}</p>
+                                                </div>
+                                            </div>
+                                            <a href="{% url 'customer:mark_noti_seen' n.id %}" class="btn bg-primary text-white rounded btn-sm mt-3">Mark as seen <i class="fas fa-inbox ms-2"></i></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                                
+                        </ul>
+                    </div>
+                </div>
+
+                <nav>
+                    <ul class="pagination">
+                        {% if notis.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ notis.previous_page_number }}">Previous</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Previous</span>
+                            </li>
+                        {% endif %}
+
+                        {% for num in notis.paginator.page_range %}
+                            <li class="page-item {% if notis.number == num %}active{% endif %}">
+                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
+                        {% endfor %}
+
+                        {% if notis.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ notis.next_page_number }}">Next</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Next</span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

@@ -1,0 +1,340 @@
+{% extends 'vendor/base.html' %} {% load static %} {% load humanize %} {% block content %}
+
+
+<section class="middle">
+    <div class="container-fluid">
+        <div class="row align-items-start justify-content-between">
+            {% include 'vendor/sidebar.html' %}
+                       
+
+            <div class="col-12 col-md-12 col-lg-9 col-xl-10">
+                <h4 class="mb-0 mb-4 fw-bold">Manage Product</h4>
+                <div class="card border-0 shadow mb-4">
+                    <div class="card-body">
+                        <div class="">
+                            <form class="pb-8" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <!-- Basic Info Section -->
+                                <div class="card mb-3">
+                                    <div class="card-header border-bottom px-4 py-3">
+                                        <h4 class="mb-0">Basic Information</h4>
+                                    </div>
+                                    <div class="card-body border-0">
+                                            <div class="text-center d-flex justify-content-center align-items-center">
+                                                <img id="imagePreview" src="{{product.image.url}}" alt="Image preview will appear here" style="width: 100%; height: 500px; object-fit: contain; border-radius: 10px;">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="imageInput" class="form-label">Product Thumbnail</label>
+                                                <input name="image" id="imageInput" class="form-control rounded" type="file" accept="image/*" onchange="previewImage(event)" />
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="productTitle" class="form-label">Title</label>
+                                                <input name="name" id="productTitle" class="form-control rounded" value="{{product.name}}" type="text" placeholder="" />
+                                                <small>Write a 60 character product title.</small>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Product category</label>
+                                                <select name="category_id" class="form-select">
+                                                    <option value="">-------------</option>
+                                                    
+                                                    {% for c in categories  %}
+                                                        <option  {% if c.title == product.category.title %} selected {% endif %} value="{{c.id}}">{{c.title}}</option>
+                                                    {% endfor %}
+                                                        
+                                                </select>
+                                                <small> Help people find your products by choosing categories that represent your product. </small>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label">Product Description</label>
+                                                <textarea name="description"  class="form-control rounded" cols="30" rows="10">{{ product.description }}</textarea>
+                                                <small>A brief summary of your product.</small>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="productPrice" class="form-label">Regular Price</label>
+                                                <input name="regular_price" id="productPrice" value="{{product.regular_price}}" class="form-control rounded" type="number" placeholder="$20.99" />
+                                            </div>
+                                            <div>
+                                                <label for="productPrice" class="form-label">Sale Price</label>
+                                                <input name="price" id="productPrice" value="{{product.price}}" class="form-control rounded" type="number" placeholder="$8.70" />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="productPrice" class="form-label">Shipping Fee</label>
+                                                <input name="shipping" value="{{product.shipping}}" id="productPrice" class="form-control rounded" type="number" placeholder="Shipping fee" />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="productPrice" class="form-label">Stock</label>
+                                                <input name="stock" value="{{product.stock}}" id="productPrice" class="form-control rounded" type="number" placeholder="Stock Count" />
+                                            </div>
+                                        </div>
+
+                                    
+
+                                    <div class="card mb-3 m-3">
+                                        <div class="card-header border-bottom px-4 py-3">
+                                            <h4 class="mb-0">Variants</h4>
+                                        </div>
+                                        
+                                        <div id="variant-container">
+                                            <!-- Loop through existing variants -->
+                                            {% for variant in variants %}
+                                            <div class="spec-item border rounded-3 mb-3 m-3 variant variant{{variant.id}}" data-variant-index="{{ forloop.counter0 }}">
+                                                <div class="card-body bg-light">
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <input type="hidden" name="variant_id[]" value="{{ variant.id }}">
+                                                        <input type="text" class="form-control rounded" name="variant_title[]" value="{{ variant.name }}" placeholder="Variant Title">
+                                                        <button type="button" class="btn text-white bg-danger rounded remove-variant" data-product_id="{{product.id}}" data-variant_id="{{variant.id}}"><i class="fas fa-trash"></i></button>
+                                                    </div>
+                                                    <div class="sub-item-container mt-3">
+                                                        <!-- Loop through existing variant items -->
+                                                        {% for item in variant.variant_items.all %}
+                                                        <div class="card-body shadow mt-3 rounded sub-item sub-item{{item.id}}">
+                                                            <input type="hidden" name="item_id_{{ forloop.parentloop.counter0 }}[]" value="{{ item.id }}">
+                                                            <input type="text" class="form-control mb-2 rounded" name="item_title_{{ forloop.parentloop.counter0 }}[]" value="{{ item.title }}" placeholder="Item Title">
+                                                            <input type="text" class="form-control mb-2 rounded" name="item_description_{{ forloop.parentloop.counter0 }}[]" value="{{ item.content }}" placeholder="Item Description">
+                                                            <button type="button" class="btn text-white bg-danger rounded btn-sm remove-item" data-variant_id="{{variant.id}}" data-item_id="{{item.id}}"><i class="fas fa-trash"></i></button>
+                                                        </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                    <button type="button" class="btn btn-sm rounded text-white bg-dark mt-3 add-item" data-variant-index="{{ forloop.counter0 }}">+ Add Item</button>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+
+                                        <!-- Button to add a new variant -->
+                                        <div class="m-3">
+                                            <button type="button" class="btn btn-sm rounded text-white bg-primary mt-1" id="add-variant">+ Add Variant</button>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="card mb-3 m-3">
+                                        <div class="card-header border-bottom px-4 py-3">
+                                            <h4 class="mb-0">Images</h4>
+                                        </div>
+
+
+                                        <div class="card-body row" id="images-container">
+                                            <!-- Display existing images from the database -->
+                                            {% for image in gallery_images %}
+                                            <div class="col-lg-3 image-container{{image.id}}" data-image-id="{{ image.gallery_id }}">
+                                                <div class="card-body image-item border rounded-3 mb-2">
+                                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                                        <button type="button" class="btn bg-danger btn-sm text-white rounded delete-image-btn" data-product_id="{{product.id}}" data-image_id="{{ image.id }}"><i class="fas fa-trash"></i></button>
+                                                    </div>
+                                                    <img src="{{ image.image.url }}" alt="Product Image" class="img-fluid mb-2" style="width: 100%; height: 150px; object-fit: cover; border-radius: 10px;">
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="m-3">
+                                            <button type="button" class="btn btn-sm rounded text-white bg-primary" id="add-image-btn">+ Add Image</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Hidden input for deleting images -->
+                                    <input type="hidden" name="delete_image_ids[]" id="delete-image-ids">
+                                </div>
+                                <button class="btn btn-lg rounded text-white bg-primary mt-3 w-100 mt-2" type="submit">Save Changes <i class="fas fa-save ms-2"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+
+    let variant_index = "{{ variants|length }}";  // Start with the number of existing variants
+
+        
+    let variant_template = (variant_index) => `
+        <div class="spec-item border rounded-3 mb-3 m-3 variant" data-variant-index="${variant_index}">
+            <div class="card-body bg-light">
+                <div class="d-flex align-items-center gap-2">
+                    <input type="hidden" name="variant_id[]" value="">
+                    <input type="text" class="form-control rounded" name="variant_title[]" placeholder="Variant Title">
+                    <button type="button" class="btn text-white bg-danger rounded remove-variant"><i class="fas fa-trash"></i></button>
+                </div>
+                <div class="sub-item-container mt-3">
+                    ${sub_item_template(variant_index)}
+                </div>
+                <button type="button" class="btn btn-sm rounded text-white bg-dark mt-3 add-item" data-variant-index="${variant_index}">+ Add Item</button>
+            </div>
+        </div>
+    `;
+
+    // Sub-item template for a variant
+    let sub_item_template = (variant_index) => `
+        <div class="card-body shadow mt-3 rounded sub-item">
+            <input type="hidden" name="item_id_${variant_index}[]" value="">
+            <input type="text" class="form-control mb-2 rounded" name="item_title_${variant_index}[]" placeholder="Item Title">
+            <input type="text" class="form-control mb-2 rounded" name="item_description_${variant_index}[]" placeholder="Item Description">
+            <button type="button" class="btn text-white bg-danger rounded btn-sm remove-item"><i class="fas fa-trash"></i></button>
+        </div>
+    `;
+
+    // Add a new variant
+    $('#add-variant').on('click', function () {
+        $('#variant-container').append(variant_template(variant_index));
+        variant_index++;  // Increment variant index for next variant
+    });
+
+    // Add new sub-item to a specific variant
+    $(document).on('click', '.add-item', function () {
+        let index = $(this).data('variant-index');
+        $(this).siblings('.sub-item-container').append(sub_item_template(index));
+    });
+
+    // Remove a variant
+    $(document).on('click', '.remove-variant', function () {
+
+        let product_id = $(this).attr("data-product_id")
+        let variant_id = $(this).attr("data-variant_id")
+
+        console.log(variant_id);
+        console.log(product_id);
+
+        if (variant_id && product_id) {
+
+        $.ajax({
+            url: `/vendor/delete_variants/${product_id}/${variant_id}/`,
+            dataType: "json",
+            beforeSend: function(){
+                console.log("Deleting");
+            },
+            success: function(response){
+                console.log(response);
+                $(`.variant${variant_id}`).addClass("d-none")
+                Toast.fire({
+                    icon: "success",
+                    title: response.message
+                });
+            }
+        })
+        } else {
+            $(this).closest('.variant').remove();
+        }
+
+    });
+
+    // Remove a sub-item
+    $(document).on('click', '.remove-item', function () {
+        let variant_id = $(this).attr("data-variant_id")
+        let item_id = $(this).attr("data-item_id")
+
+        if(variant_id && item_id){
+            $.ajax({
+                url: `/vendor/delete_variants_items/${variant_id}/${item_id}/`,
+                dataType: "json",
+                beforeSend: function(){
+                    console.log("Deleting");
+                },
+                success: function(response){
+                    console.log(response);
+                    $(`.sub-item${item_id}`).addClass("d-none")
+                    Toast.fire({
+                        icon: "success",
+                        title: response.message
+                    });
+                }
+            })
+        } else {
+            $(this).closest('.sub-item').remove();
+        }
+    });
+    
+    // Handle dynamically adding images
+    $("#add-image-btn").click(function () {
+        var imageIndex = new Date().getTime(); // Unique ID based on timestamp
+        var imageHtml = `
+            <div class="image-item border rounded-3 mb-3" data-image-id="${imageIndex}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="mb-0">Image</h4>
+                        <button type="button" class="btn bg-danger btn-sm text-white rounded delete-image-btn" data-image-id="${imageIndex}"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <input type="file" class="form-control mb-2" name="image_${imageIndex}">
+                </div>
+            </div>`;
+        $("#images-container").append(imageHtml);
+    });
+
+    // Handle deleting images dynamically
+    $(document).on("click", ".delete-image-btn", function () {
+        var imageId = $(this).data("image-id");
+
+        // Check if the image being deleted is from the database (existing image)
+        var existingImage = $(`.image-item[data-image-id="${imageId}"] img`).length > 0;
+        if (existingImage) {
+            // Add the gallery_id to the hidden delete image input for backend deletion
+            var deleteIdsInput = $("#delete-image-ids");
+            var currentValue = deleteIdsInput.val();
+            deleteIdsInput.val(currentValue + imageId + ',');
+        }
+
+
+        let product_id = $(this).attr("data-product_id")
+        let image_id = $(this).attr("data-image_id")
+        
+        if (product_id && image_id) {
+            
+                $.ajax({
+                    url: `/vendor/delete_product_image/${product_id}/${image_id}/`,
+                    dataType: "json",
+                beforeSend: function(){
+                    console.log("Deleting");
+                },
+                success: function(response){
+                    console.log(response);
+                    $(`.image-container${image_id}`).addClass("d-none")
+                    Toast.fire({
+                        icon: "success",
+                        title: response.message
+                    });
+                }
+            })
+        }
+
+        // Remove the image element from the DOM
+        $(`.image-item[data-image-id="${imageId}"]`).remove();
+    });
+    
+</script>
+<script>
+    function previewImage(event) {
+        const imageInput = event.target.files[0]; // Get the selected file
+        const reader = new FileReader();
+
+        reader.onload = function() {
+            const preview = document.getElementById('imagePreview');
+            preview.src = reader.result; // Set the image source to the base64 result
+            preview.style.display = 'block'; // Make the image visible
+        }
+
+        if (imageInput) {
+            reader.readAsDataURL(imageInput); // Read the file as a Data URL
+        }
+    }
+</script>
+
+{% endblock content %}

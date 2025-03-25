@@ -1,0 +1,115 @@
+{% extends 'partials/base.html' %} {% load static %} {% load humanize %} {% block content %}
+<div class="gray py-3">
+    <div class="container">
+        <div class="row">
+            <div class="colxl-12 col-lg-12 col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Customer</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Wishlists</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="middle">
+    <div class="container">
+        <div class="row align-items-start justify-content-between">
+            {% include 'customer/sidebar.html' %}
+
+
+            <div class="col-12 col-md-12 col-lg-8 col-xl-8">
+                <div class="row mb-4">
+                    <h4 class="mb-0 mb-2 fw-bold">Wishlist ({{wishlist_count.count}})</h4>
+                </div>
+
+                <div class="row align-items-center rows-products">
+                    {% for w in wishlist %}
+                        <div class="col-lg-4 mb-3">
+                    <div class="product_grid card b-0  rounded-3 shadow m-2 p-2">
+                        <div class="card-body p-0">
+                            <div class="shop_thumb position-relative">
+                                <a class="card-img-top d-block overflow-hidden" href="{% url 'store:product_detail' w.product.slug %}"><img class="card-img-top" style="width: 100%; height: 230px; object-fit: cover;" src="{{w.product.image.url}}" alt="..." /></a>
+                            </div>
+                        </div>
+                        <div class="card-footer b-0 p-0 pt-2 bg-white d-flex align-items-start justify-content-between">
+                            <div class="text-left">
+                                <div class="text-left">
+                                    <div class="elso_titl"><span class="small"><a href="{% url 'store:category' w.product.category.id %}">{{w.product.category.title}}</a></span></div>
+                                    <h5 class="fs-md mb-0 lh-1 mb-1"><a href="{% url 'store:product_detail' w.product.slug %}">{{w.product.name}}</a></h5>
+                                        <div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0 mt-3">
+                                        {% if not w.product.average_rating  %}
+                                        <i class="fas fa-star text-warning"></i>
+                                        {% elif w.product.average_rating > 0 and w.product.average_rating < 2 %}
+                                        <i class="fas fa-star text-warning"></i>
+                                        {% elif w.product.average_rating > 1 and w.product.average_rating < 3 %}
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        {% elif w.product.average_rating > 2 and w.product.average_rating < 4 %}
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        {% elif w.product.average_rating > 3 and w.product.average_rating < 5 %}
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        {% elif w.product.average_rating > 4 %}
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div class="elis_rty"><span class="ft-bold text-dark fs-sm">${{w.product.price}}</span></div>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                        <button type="button" class="btn btn-sm bg-primary text-white rounded add_to_cart" data-id="{{w.product.id}}">Add to cart <i class="fas fa-shopping-cart ms-2"></i></button>
+                                        <input type="hidden" class="quantity" value="1" name="" id="">
+                                        <a href="{% url 'customer:remove_from_wishlist' w.id %}" class=""><i class="fas fa-trash fs-4 text-danger"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                        {% empty %}
+                        <p>No item in wishlist</p>
+                    {% endfor %}
+                </div>
+
+                <ul class="pagination">
+            {% if wishlist.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ wishlist.previous_page_number }}">Previous</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                </li>
+            {% endif %}
+
+            {% for num in wishlist.paginator.page_range %}
+                <li class="page-item {% if wishlist.number == num %}active{% endif %}">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+            {% endfor %}
+
+            {% if wishlist.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ wishlist.next_page_number }}">Next</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Next</span>
+                </li>
+            {% endif %}
+        </ul>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

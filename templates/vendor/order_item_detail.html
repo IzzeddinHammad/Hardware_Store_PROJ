@@ -1,0 +1,90 @@
+{% extends 'vendor/base.html' %} {% load static %} {% load humanize %} {% block content %}
+<section class="middle">
+    <div class="container-fluid">
+        <div class="row align-items-start justify-content-between">
+            {% include 'vendor/sidebar.html' %}
+            <div class="col-12 col-md-12 col-lg-9 col-xl-10">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="">
+                        <h4 class="mb-0 mb-2 fw-bold">Order Number: #{{order.order_id}}</h4>
+                        <a href="{% url 'vendor:order_detail' order.order_id %}" class="btn bg-light btn-sm rounded"><i class="fas fa-arrow-left me-1"></i> View Order</a>
+                    </div>
+
+                    
+               </div>
+
+                <div class="order-data mt-5">
+                    <div class="ord_list_wrap border mb-4 mfliud">
+                        <div class="ord_list_body text-left">
+                            <div class="row align-items-center justify-content-center m-0 py-4 br-bottom">
+                                <div class="col-xl-6 col-lg-5 col-md-5 col-12">
+                                    <div class="cart_single d-flex align-items-start mfliud-bot gap-3">
+                                        <div class="cart_selected_single_thumb">
+                                            <a href="{% url 'store:product_detail' item.product.slug %}"><img src="{{item.product.image.url}}" width="75" class="img-fluid rounded" alt="" /></a>
+                                        </div>
+                                        <div class="cart_single_caption pl-3">
+                                            <h4 class="product_title fs-sm ft-medium mb-1 lh-1"> <a href="{% url 'store:product_detail' item.product.slug %}">{{item.product.name}}</a></h4>
+                                            <p class="mb-2">
+                                                <span class="text-dark medium">Vendor: {{item.vendor.profile.full_name}}</span> <br />
+                                                
+                                                {% if item.color %}
+                                                    <span class="text-dark medium">Color: {{item.color}}</span>
+                                                {% endif %}
+
+                                                {% if item.size %}
+                                                    <span class="text-dark medium">Size: {{item.size}}</span>
+                                                {% endif %}
+                                                    
+                                            </p>
+                                            <h4 class="fs-sm ft-bold mb-0 lh-1">${{item.price}}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-lg-3 col-md-3 col-6">
+                                    <p class="mb-1 p-0"><span class="text-muted">Status</span></p>
+                                    <div class="delv_status"><span class="ft-medium small text-dark bg-light rounded px-3 py-1">{{item.order_status}}</span></div>
+                                </div>
+                                <div class="col-xl-2 col-lg-4 col-md-4 col-6">
+                                    <p class="mb-1 p-0"><span class="text-muted">Payment Status</span></p>
+                                    <h6 class="mb-0 ft-medium fs-sm">{{order.payment_status}}</h6>
+                                </div>
+                                <div class="col-xl-2 col-lg-4 col-md-4 col-6">
+                                    <p class="mb-1 p-0"><span class="text-muted">Order Date/Time</span></p>
+                                    <h6 class="mb-0 ft-medium fs-sm">{{order.date}}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" shadow p-3 mb-4">
+                        <form action="{% url 'vendor:update_order_item_status' order.order_id item.item_id %}" class="col-lg-12" method="POST">
+                            {% csrf_token %}
+                            <label class="mb-2" for="">Shipping Status</label>
+                            <select name="order_status" id="" class="form-select mb-4">
+                                <option value="">Order Status</option>
+                                <option {% if item.order_status == 'Pending' %} selected {% endif %} value="Pending">Pending</option>
+                                <option {% if item.order_status == 'Processing' %} selected {% endif %} value="Processing">Processing</option>
+                                <option {% if item.order_status == 'Shipped' %} selected {% endif %} value="Shipped">Shipped</option>
+                                <option {% if item.order_status == 'Fulfilled' %} selected {% endif %} value="Fulfilled">Fulfilled</option>
+                                <option {% if item.order_status == 'Cancelled' %} selected {% endif %} value="Cancelled">Cancelled</option>
+                            </select>
+
+                            <label class="mb-2" for="">Shipping Service</label>
+                            <select name="shipping_service" id="" class="form-select mb-4">
+                                <option selected disabled>--- Select Shipping Service ---</option>
+                                <option {% if item.shipping_service == 'DHL' %} selected {% endif %} value="DHL">DHL</option>
+                                <option {% if item.shipping_service == 'FedX' %} selected {% endif %}  value="FedX">FedX</option>
+                                <option {% if item.shipping_service == 'UPS' %} selected {% endif %}  value="UPS">UPS</option>
+                                <option {% if item.shipping_service == 'AnPost' %} selected {% endif %}  value="AnPost">AnPost</option>
+                            </select>
+                            <label class="mb-2" for="">Tracking Id</label>
+
+                            <input type="text" value="{{item.tracking_id}}" placeholder="Tracking Id" name="tracking_id" class="form-control mb-4 rounded" id="">
+                            <button type="submit" class="btn btn bg-primary btn-sm rounded text-white w-100">Save Shipping Info <i class="fas fa-save ms-2"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

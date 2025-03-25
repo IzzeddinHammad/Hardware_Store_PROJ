@@ -1,0 +1,148 @@
+{% extends 'partials/base.html' %} {% load static %} {% load humanize %} {% block content %}
+<section class="p-0 pb-5 mb-5">
+    <div class="container">
+
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-12 col-lg-7 p-4 rounded-3 bg-white">
+                <p class="text-secondary fs-4 mb-0 mt-5 mb-3">20% OFF Today Only! <img src="https://cdn-icons-png.flaticon.com/128/9004/9004955.png" width="30" alt=""></p>
+                <h1 class="display-4 fw-bold">Any Hardware, <span class="text-success"> <br> Best Prices <br><span class="text-dark">& Free Delivery</span></span></h1>
+                <p class="text-secondary fs-6 mt-4">Welcome to Hardware Store, shop faster, easier, securely, with good deals, customer support, fast refunds and many more amazing features that awaits you!</p>
+                <div class="d-flex align-items-center gap-2 mt-5">
+                    <div class="d-flex align-items-center border  rounded-3 bg-light  w-75" s>
+                        <input type="text" class="form-control shadow-none border-0 bg-transparent" placeholder="Search Item" name="" id="" />
+                    </div>
+                    <a href="{% url 'store:shop' %}" class="btn bg-primary  text-white rounded "> <i class="fas fa-search text-white"></i></a>
+                </div>
+                <div class="d-flex justify-content-start gap-4 align-items-center mt-3">
+                    <p class="text-secondary">Free Delivery Today Only! <b>Terms & Confitions</b>Apply </p>
+                </div>
+                <div class="d-flex align-items-center justify-content-start gap-5 fs-5 text-secondary mt-2">
+                    <i class="fab text-success fa-shopify"></i>
+                    <i class="fab fa-amazon"></i>
+                    <i class="fab text-success fa-ebay"></i>
+                    <i class="fab text-success fa-alipay"></i>
+                    <i class="fab fa-google"></i>
+                </div>
+            </div>
+            <div class="col-12 col-lg-5">
+                <img class="img-fluid rounded-3 w-100" style="height: 500px; width: 100%; object-fit: contain" src="{% static 'assets/img/home-hero.jpg' %}" alt="" />
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="middle mt-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div class="sec_title position-relative text-center">
+                    <h1 class="ft-bold pt-3">Trending Categories <img src="https://cdn-icons-png.flaticon.com/128/7183/7183999.png" width="40" alt=""></h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="row align-items-center justify-content-center">
+            
+            {% for c in categories %}
+            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
+                <div class="cats_side_wrap text-center mx-auto mb-3">
+                    <div class="sl_cat_01">
+                        <div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2 border">
+                            <a href="{% url 'store:category' c.id %}" class="d-block">
+                                
+                                {% if c.image %}
+                                <img src="{{c.image.url}}" class="img-fluid" width="80" alt="" />
+                                {% else %}
+                                <img src="{% static 'assets/img/headphones.png' %}" class="img-fluid" width="40" alt="" />
+                                {% endif %}
+                                    
+                            </a>
+                        </div>
+                    </div>
+                    <div class="sl_cat_02">
+                        <h6 class="m-0 ft-medium fs-sm"><a href="{% url 'store:category' c.id %}">{{c.title}}</a></h6>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            
+        </div>
+    </div>
+</section>
+
+<section class="middle mt-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div class="sec_title position-relative text-center">
+                    <h1 class="ft-bold pt-3">Popular Products <img src="https://cdn-icons-png.flaticon.com/128/785/785116.png" width="40" alt=""></h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="row align-items-center rows-products">
+             {% for p in products %}
+                <div class="col-lg-3 mb-3">
+                    <div class="product_grid card b-0  rounded-3 shadow m-2 p-2">
+                        <div class="card-body p-0">
+                            <div class="shop_thumb position-relative">
+                                <a class="card-img-top d-block overflow-hidden" href="{% url 'store:product_detail' p.slug %}"><img class="card-img-top" style="width: 100%; height: 230px; object-fit: cover;" src="{{p.image.url}}" alt="..." /></a>
+                            </div>
+                        </div>
+                        <div class="card-footer b-0 p-0 pt-2 bg-white d-flex align-items-start justify-content-between">
+                            <div class="text-left">
+                                <div class="text-left">
+                                    <div class="elso_titl"><span class="small"><a href="{% url 'store:category' p.category.id %}">{{p.category.title}}</a></span></div>
+                                    <h5 class="fs-md mb-0 lh-1 mb-1"><a href="{% url 'store:product_detail' p.slug %}">{{p.name}}</a></h5>
+                                        <div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0 mt-3">
+                                        {% if not p.average_rating  %}
+                                        <i class="fas fa-star text-warning"></i>
+                                        {% elif p.average_rating > 0 and p.average_rating < 2 %}
+                                        <i class="fas fa-star text-warning"></i>
+                                        {% elif p.average_rating > 1 and p.average_rating < 3 %}
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        {% elif p.average_rating > 2 and p.average_rating < 4 %}
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        {% elif p.average_rating > 3 and p.average_rating < 5 %}
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        {% elif p.average_rating > 4 %}
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div class="elis_rty"><span class="ft-bold text-dark fs-sm">${{p.price}}</span></div>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                        <button type="button" class="btn btn-sm bg-primary text-white rounded add_to_cart" data-id="{{p.id}}">Add to cart <i class="fas fa-shopping-cart ms-2"></i></button>
+                                        <input type="hidden" class="quantity" value="1" name="" id="">
+                                        <a href="#" class="add_to_wishlist" data-product_id="{{p.id}}"><i class="fas fa-heart fs-4 text-black"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div class="position-relative text-center">
+                    <a href="{% url 'store:shop' %}" class="btn bg-dark text-light rounded btn-sm mt-5">Shop Now <i class="fas fa-arrow-right ms-2"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

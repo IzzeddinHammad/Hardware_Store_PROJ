@@ -1,0 +1,100 @@
+{% extends 'vendor/base.html' %} {% load static %} {% load humanize %} {% block content %}
+<section class="middle">
+    <div class="container-fluid">
+        <div class="row align-items-start justify-content-between">
+            {% include 'vendor/sidebar.html' %}
+
+
+            <div class="col-12 col-md-12 col-lg-9 col-xl-10">
+                <h4 class="mb-0 mb-4 fw-bold">Create Product</h4>
+                <div class="card border-0 shadow mb-4">
+                    <div class="card-body">
+                        <div class="">
+                            <div class="row mt-0">
+                                <form class="pb-8 mt-2" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="card border-0 mb-3">
+                                        <!-- Basic Info Section -->
+                                        <div class="card-header border-0 px-4 py-3 rounded">
+                                            <h4 class="mb-0">Basic Information</h4>
+                                        </div>
+                                        <div class="card-body border-0">
+                                            <div class="text-center d-flex justify-content-center align-items-center">
+                                                <img id="imagePreview" src="" alt="Image preview will appear here" style="width: 100%; height: 500px; object-fit: cover; border-radius: 10px; display: none;">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="imageInput" class="form-label">Product Thumbnail</label>
+                                                <input name="image" id="imageInput" class="form-control rounded" type="file" accept="image/*" onchange="previewImage(event)" />
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="productTitle" class="form-label">Title</label>
+                                                <input name="name" id="productTitle" class="form-control rounded" type="text" placeholder="" />
+                                                <small>Write a 60 character product title.</small>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Product category</label>
+                                                <select name="category_id" class="form-select">
+                                                    <option value="">-------------</option>
+                                                    
+                                                    {% for c in categories  %}
+                                                        <option value="{{c.id}}">{{c.title}}</option>
+                                                    {% endfor %}
+                                                        
+                                                </select>
+                                                <small> Help people find your products by choosing categories that represent your product. </small>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label">Product Description</label>
+                                                <textarea name="description" class="form-control rounded" cols="30" rows="10"></textarea>
+                                                <small>A brief summary of your product.</small>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="productPrice" class="form-label">Regular Price</label>
+                                                <input name="regular_price" id="productPrice" class="form-control rounded" type="number" placeholder="$20.99" />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="productPrice" class="form-label">Sale Price</label>
+                                                <input name="price" id="productPrice" class="form-control rounded" type="number" placeholder="$8.70" />
+                                            </div>
+                                            
+                                             <div class="mb-3">
+                                                <label for="productPrice" class="form-label">Shipping Fee</label>
+                                                <input name="shipping" id="productPrice" class="form-control rounded" type="number" placeholder="Shipping fee" />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="productPrice" class="form-label">Stock</label>
+                                                <input name="stock" id="productPrice" class="form-control rounded" type="number" placeholder="Stock Count" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-lg bg-primary rounded btn-sm text-white w-100 mt-2" type="submit">Continue <i class="fas fa-arrow-right"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    function previewImage(event) {
+        const imageInput = event.target.files[0]; // Get the selected file
+        const reader = new FileReader();
+
+        reader.onload = function() {
+            const preview = document.getElementById('imagePreview');
+            preview.src = reader.result; // Set the image source to the base64 result
+            preview.style.display = 'block'; // Make the image visible
+        }
+
+        if (imageInput) {
+            reader.readAsDataURL(imageInput); // Read the file as a Data URL
+        }
+    }
+</script>
+{% endblock content %}
