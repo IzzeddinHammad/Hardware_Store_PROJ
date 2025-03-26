@@ -1,0 +1,63 @@
+[
+    {
+        "title": "Understanding Django ORM",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus luctus urna sed urna ultricies ac tempor dui sagittis.",
+        "tags": "Django, ORM, Python"
+    },
+    {
+        "title": "CKEditor5: A Versatile Text Editor for Django",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.",
+        "tags": "CKEditor5, Django, Text Editor"
+    },
+    {
+        "title": "Top 10 Python Libraries for Web Development",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec tellus sed augue semper porta. Mauris massa.",
+        "tags": "Python, Libraries, Web Development"
+    },
+    {
+        "title": "How to Optimize Django for Production",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
+        "tags": "Django, Production, Optimization"
+    },
+    {
+        "title": "Building REST APIs with Django Rest Framework",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. Fusce nec tellus sed augue semper porta.",
+        "tags": "Django, REST API, DRF"
+    },
+    {
+        "title": "Best Practices for Writing Clean Python Code",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.",
+        "tags": "Python, Best Practices, Clean Code"
+    },
+
+    {
+        "title": "Understanding Django Models",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ut pharetra mauris. Nullam bibendum leo in felis varius, et vestibulum lacus bibendum.",
+        "tags": "Django, Python, Web Development"
+    },
+    {
+        "title": "A Beginner's Guide to REST APIs",
+        "content": "Etiam sit amet libero orci. Sed vitae ex nec lacus malesuada facilisis. Quisque tempor justo in justo tristique tincidunt.",
+        "tags": "APIs, REST, Backend"
+    },
+    {
+        "title": "Introduction to Frontend Frameworks",
+        "content": "Suspendisse potenti. Integer gravida ligula quis suscipit hendrerit. Donec bibendum, libero non gravida fermentum, erat elit fringilla justo.",
+        "tags": "Frontend, JavaScript, React"
+    },
+    {
+        "title": "Best Practices in Software Engineering",
+        "content": "Mauris nec dui metus. Sed non nisi ipsum. Morbi in velit vitae lacus scelerisque tincidunt sit amet eget odio.",
+        "tags": "Software, Best Practices, Development"
+    },
+    {
+        "title": "Exploring Cloud Computing",
+        "content": "Aenean ultricies mi a arcu malesuada, id malesuada nisl elementum. Donec bibendum venenatis lacus sit amet tempus.",
+        "tags": "Cloud, AWS, Azure"
+    },
+    {
+        "title": "Introduction to Machine Learning",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut fringilla leo sed magna varius, nec viverra orci fermentum.",
+        "tags": "Machine Learning, AI, Data Science"
+    }
+]
