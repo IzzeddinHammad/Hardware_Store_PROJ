@@ -8,8 +8,8 @@ from django.urls import reverse
 from order.models import Order, OrderItem
 from stripe.error import StripeError
 from django.core.exceptions import ObjectDoesNotExist
-from vouchers.models import Voucher 
-from vouchers.forms import VoucherApplyForm 
+from vouchers.models import Voucher
+from vouchers.forms import VoucherApplyForm
 from decimal import Decimal
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -26,7 +26,7 @@ def add_cart(request, product_id):
     cart_item, created = CartItem.objects.get_or_create(product=product, cart=cart, defaults={'quantity': 0})
 
     if product.stock < cart_item.quantity + 1:
-        return render(request, 'cart/insufficient_stock.html', {'product': product})
+        return render(request, 'insufficient_stock.html', {'product': product})
 
     cart_item.quantity += 1
     cart_item.save()
@@ -44,12 +44,12 @@ def cart_detail(request):
     discount = 0
     voucher_id = 0
     new_total = 0
-    voucher=None 
+    voucher=None
 
     voucher_apply_form = VoucherApplyForm()
 
 
-    try: 
+    try:
         voucher_id = request.session.get('voucher_id')
         voucher = Voucher.objects.get(id=voucher_id)
         if voucher != None:
