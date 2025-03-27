@@ -38,8 +38,15 @@
         </tbody>
     </table>
 
-    <p><strong>Total: €{{ total }}</strong></p>
+  <!--  <p><strong>Total: €{{ total }}</strong></p> -->
+    {% if voucher %}
+    <p>{{ total }}</p>
+    "{{ voucher.code }}" voucher 
+    ({{ voucher.discount }}% off)
 
+    <td>
+        
+    </td>
     <a href="{% url 'cart:empty_cart' %}" class="btn btn-danger">
         <i class="fas fa-trash-alt"></i> Empty Cart
     </a>
