@@ -25,7 +25,7 @@ def add_cart(request, product_id):
     cart, _ = Cart.objects.get_or_create(cart_id=_cart_id(request))
     cart_item, created = CartItem.objects.get_or_create(product=product, cart=cart, defaults={'quantity': 0})
 
-    if product.stock < cart_item.quantity + 1:
+    if product.stock < cart_item.quantity:
         return render(request, 'insufficient_stock.html', {'product': product})
 
     cart_item.quantity += 1

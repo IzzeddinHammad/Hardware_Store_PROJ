@@ -44,6 +44,7 @@
                             {% if user.profile %}
                                 <li><a class="dropdown-item" href="{% url 'show_profile' user.profile.pk %}">View Profile</a></li>
                                 <li><a class="dropdown-item" href="{% url 'edit_profile' user.profile.pk %}">Edit Profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'order:order_history' %}">order history</a></li>
                             {% else %}
                                 <li><a class="dropdown-item" href="{% url 'create_profile' %}">Create Profile</a></li>
                             {% endif %}
@@ -86,7 +87,7 @@
         {% block content %}
         {% endblock content %}
     </div>
-    
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

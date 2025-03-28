@@ -13,7 +13,7 @@ class orderHistory(LoginRequiredMixin, View):
         if request.user.is_authenticated:
             email =str(request.user.email)
             order_details = Order.objects.filter(emailAddress=email)
-        return render(request, 'order_list.html', {'order_details': order_details})
+        return render(request, 'orders_list.html', {'order_details': order_details})
 
 class orderDetail(LoginRequiredMixin, View):
     def get(self, request, order_id):
