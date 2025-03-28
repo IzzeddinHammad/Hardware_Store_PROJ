@@ -114,6 +114,8 @@ def checkout(request):
 
 def create_order(request):
     session_id = request.GET.get('session_id')
+    cart_total = request.GET.get('cart_total')
+    voucher_id = request.GET.get('voucher_id')
     if not session_id:
         return redirect('/products/')
 
@@ -141,6 +143,14 @@ def create_order(request):
         order_details.save()
 
         cart = Cart.objects.filter(cart_id=_cart_id(request)).first()
+
+        voucher = get_object_or_404(Voucher, id=voucher_id)
+        if voucher != None:
+            order_details.voucher = voucher 
+            cart_total = Decimal(cart_total)
+            order_details.discount = cart_total*(voucher.discount/Decimal('100')) 
+            order_details.total = (cart_total-order_details.discount)
+            order_details.save()
         if cart:
             cart_items = CartItem.objects.filter(cart=cart, active=True)
             for item in cart_items:
