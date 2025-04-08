@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
+from django.contrib.auth.models import User
 
 class Category(models.Model):
     title = models.CharField(max_length=100)
@@ -35,8 +36,11 @@ class Product(models.Model):
 
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL , on_delete=models.CASCADE )
     rating = models.PositiveBigIntegerField(default=3)
     comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.comment
+        return f"Review by {self.user.username} on {self.product.name}"

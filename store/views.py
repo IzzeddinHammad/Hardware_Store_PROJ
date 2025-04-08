@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render , get_object_or_404 , redirect
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Product
+from .models import Product , Review
+from .forms import ReviewForm
+
 
 class HomePageView(ListView):
     model = Product
@@ -61,3 +63,16 @@ class SearchResultsListView(ListView):
         if query:
             return Product.objects.filter(Q(name__icontains=query))
         return Product.objects.none()
+
+
+def add_review(request, product_id):
+    product = get_object_or_404(Product , id=product_id)
+    if request.method == "POST":
+        form = ReviewForm(request.POST)
+        if form.is_valid() and request.user.is_authenticated:
+            review = form.save(commit=False)
+            review.user = request.user
+            review.product = product
+            review.save()
+            return redirect('product_detail' , product_id = product_id)
+        return redirect('product_detail' , product_id = product_id)

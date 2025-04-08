@@ -7,6 +7,7 @@
     <p><strong>Stock:</strong> {{ product.stock }}</p>
 </div>
 
+<!-- Add to Cart & Edit/Delete Links -->
 {% if user.is_authenticated %}
 <form action="{% url 'cart:add_cart' product.id %}" method="POST">
     {% csrf_token %}
@@ -16,5 +17,34 @@
 <p><a href="{% url 'product_edit' product.id %}">Edit product</a></p>
 <p><a href="{% url 'product_delete' product.id %}">Delete product</a></p>
 {% endif %}
+
+<!-- Reviews Section -->
+<hr>
+<div class="reviews-section">
+    <h3>Customer Reviews</h3>
+
+    <!-- Display Existing Reviews -->
+    {% for review in product.review.all %}
+        <div class="review-card" style="border: 1px solid #ddd; padding: 10px; margin: 10px 0;">
+            <p><strong>{{ review.user.username }}</strong>
+                <span style="color: gold;">★{{ review.rating }}</span>
+                <small>({{ review.created_at|date:"F j, Y" }})</small>
+            </p>
+            <p>{{ review.comment }}</p>
+        </div>
+    {% empty %}
+        <p>No reviews yet. Be the first to review!</p>
+    {% endfor %}
+
+    <!-- Review Submission Form -->
+    {% if user.is_authenticated %}
+        <h4>Write a Review</h4>
+        <form method="post" action="{% url 'add_review' product.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}  
+        <button type="submit" class="btn btn-success">Submit Review</button>
+        </form>
+    {% endif %}
+</div>
 
 {% endblock content %}
