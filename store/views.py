@@ -61,18 +61,24 @@ class SearchResultsListView(ListView):
     def get_queryset(self):
         query = self.request.GET.get("q")
         if query:
-            return Product.objects.filter(Q(name__icontains=query))
+            return Product.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
         return Product.objects.none()
 
 
 def add_review(request, product_id):
-    product = get_object_or_404(Product , id=product_id)
+    product = get_object_or_404(Product, id=product_id)
+    if not request.user.is_authenticated:
+        return redirect('login')
+
     if request.method == "POST":
         form = ReviewForm(request.POST)
-        if form.is_valid() and request.user.is_authenticated:
+        if form.is_valid():
             review = form.save(commit=False)
             review.user = request.user
             review.product = product
             review.save()
-            return redirect('product_detail' , product_id = product_id)
-        return redirect('product_detail' , product_id = product_id)
+            return redirect('product_detail', product_id=product_id)
+    else:
+        form = ReviewForm()
+
+    return render(request, 'add_review.html', {'form': form, 'product': product})
