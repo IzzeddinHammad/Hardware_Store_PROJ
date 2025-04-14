@@ -1,50 +1,71 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="product-entry">
-    <p><strong>Name:</strong> {{ product.name }}</p>
-    <p><strong>Price:</strong> €{{ product.price }}</p>
-    <p><strong>Stock:</strong> {{ product.stock }}</p>
-</div>
 
-<!-- Add to Cart & Edit/Delete Links -->
-{% if user.is_authenticated %}
-<form action="{% url 'cart:add_cart' product.id %}" method="POST">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-primary">Add to Cart</button>
-</form>
-
-<p><a href="{% url 'product_edit' product.id %}">Edit product</a></p>
-<p><a href="{% url 'product_delete' product.id %}">Delete product</a></p>
-{% endif %}
-
-<!-- Reviews Section -->
+<!-- Ratings Section -->
 <hr>
-<div class="reviews-section">
-    <h3>Customer Reviews</h3>
+<div class="ratings-section">
+    <h3>Customer Ratings</h3>
 
-    <!-- Display Existing Reviews -->
-    {% for review in product.review.all %}
-        <div class="review-card" style="border: 1px solid #ddd; padding: 10px; margin: 10px 0;">
-            <p><strong>{{ review.user.username }}</strong>
-                <span style="color: gold;">★{{ review.rating }}</span>
-                <small>({{ review.created_at|date:"F j, Y" }})</small>
-            </p>
-            <p>{{ review.comment }}</p>
+    <!-- Display messages -->
+    {% if messages %}
+    <div class="alert-messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
         </div>
-    {% empty %}
-        <p>No reviews yet. Be the first to review!</p>
-    {% endfor %}
-
-    <!-- Review Submission Form -->
-    {% if user.is_authenticated %}
-        <h4>Write a Review</h4>
-        <form method="post" action="{% url 'add_review' product.id %}">
-        {% csrf_token %}
-        {{ form.as_p }}  
-        <button type="submit" class="btn btn-success">Submit Review</button>
-        </form>
+        {% endfor %}
+    </div>
     {% endif %}
-</div>
 
-{% endblock content %}
+    <!-- Display Existing Ratings -->
+    {% if product.ratings.all %}
+        {% for rating in product.ratings.all %}
+        <div class="rating-card" style="border: 1px solid #ddd; padding: 10px; margin: 10px 0;">
+            <p>
+                <strong>{{ rating.user.username }}</strong>
+                <span style="color: gold;">
+                    {% with ''|center:rating.stars as range %}
+                        {% for _ in range %}★{% endfor %}
+                    {% endwith %}
+                </span>
+                <small>({{ rating.created_at|date:"F j, Y" }})</small>
+
+                {% if rating.user == request.user or request.user.is_staff %}
+                <form action="{% url 'remove_rating' rating.id %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger ml-2"
+                            onclick="return confirm('Are you sure you want to delete this rating?')">
+                        Remove
+                    </button>
+                </form>
+                {% endif %}
+            </p>
+
+            {% if rating.comment %}
+            <div class="comment-box" style="background: #f8f9fa; padding: 8px; border-radius: 4px; margin-top: 8px;">
+                <p>{{ rating.comment }}</p>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No ratings yet. Be the first to rate!</p>
+    {% endif %}
+
+    <!-- Rating Submission Form -->
+    <h4>Add Your Rating and Review</h4>
+    <form action="{% url 'rate_item' product.id %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Rating:</label>
+            {{ rating_form.stars }}
+        </div>
+        <div class="form-group">
+            <label>Review:</label>
+            {{ review_form.comment }}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}

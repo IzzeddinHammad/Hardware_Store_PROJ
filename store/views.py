@@ -3,9 +3,9 @@ from django.views.generic import DetailView, ListView, CreateView, UpdateView, D
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Product , Review
-from .forms import ReviewForm
-
+from .models import Product , Rating
+from django.contrib import messages
+from .forms import RatingForm , ReviewForm
 
 class HomePageView(ListView):
     model = Product
@@ -30,7 +30,7 @@ class VendorRequiredMixin(UserPassesTestMixin):
 class ProductCreateView(LoginRequiredMixin, VendorRequiredMixin, CreateView):
     model = Product
     template_name = 'product_new.html'
-    fields = ['name','description', 'image', 'price', 'stock']
+    fields = ['name','description', 'image', 'price', 'stock' , 'vendor' , 'category']
 
     def form_valid(self, form):
         form.instance.vendor = self.request.user
@@ -65,20 +65,38 @@ class SearchResultsListView(ListView):
         return Product.objects.none()
 
 
-def add_review(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    if not request.user.is_authenticated:
-        return redirect('login')
+def rate_item(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
 
-    if request.method == "POST":
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.user = request.user
-            review.product = product
+    if request.method == 'POST':
+        rating_form = RatingForm(request.POST)
+        review_form = ReviewForm(request.POST)
+
+        if rating_form.is_valid() and review_form.is_valid():
+            rating = rating_form.save(commit=False)
+            rating.item = product
+            rating.user = request.user
+            rating.save()
+
+            review = review_form.save(commit=False)
+            review.rating = rating
             review.save()
-            return redirect('product_detail', product_id=product_id)
-    else:
-        form = ReviewForm()
 
-    return render(request, 'add_review.html', {'form': form, 'product': product})
+            messages.success(request, "Your rating and review have been saved!")
+            return redirect('product_detail', pk=product_id)
+    else:
+        rating_form = RatingForm()
+        review_form = ReviewForm()
+
+    return render(request, 'product_detail.html', {
+        'product': product,
+        'rating_form': rating_form,
+        'review_form': review_form
+    })
+
+def remove_rating(request, rating_id):
+    rating = get_object_or_404(Rating, id=rating_id, user=request.user)
+    product_id = rating.item.id
+    rating.delete()
+    messages.success(request, "Rating deleted successfully")
+    return redirect('product_detail', pk=product_id)

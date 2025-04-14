@@ -38,13 +38,18 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('product_detail', args=[str(self.id)])
 
+
+
+class Rating(models.Model):
+    item = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='ratings')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    stars = models.PositiveIntegerField(
+        default=3,
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
 class Review(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviews")
-    user = models.ForeignKey(settings.AUTH_USER_MODEL , on_delete=models.CASCADE )
-    rating = models.PositiveBigIntegerField(default=3  , validators=[MinValueValidator(1) , MaxValueValidator(5) ])
+    rating = models.OneToOneField(Rating, on_delete=models.CASCADE, related_name='review')
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"Review by {self.user.username} on {self.product.name}"
