@@ -93,6 +93,8 @@ def rate_item(request, product_id):
         'review_form': review_form
     })
 
+    
+
 def remove_rating(request, rating_id):
     rating = get_object_or_404(Rating, id=rating_id, user=request.user)
     product_id = rating.item.id
