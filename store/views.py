@@ -48,7 +48,7 @@ class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Product
     template_name = 'product_delete.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('store:home')
 
     def test_func(self):
         product = self.get_object()
@@ -63,7 +63,6 @@ class SearchResultsListView(ListView):
         if query:
             return Product.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
         return Product.objects.none()
-
 
 def rate_item(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
@@ -83,7 +82,7 @@ def rate_item(request, product_id):
             review.save()
 
             messages.success(request, "Your rating and review have been saved!")
-            return redirect('product_detail', pk=product_id)
+            return redirect('store:product_detail', pk=product_id)
     else:
         rating_form = RatingForm()
         review_form = ReviewForm()
@@ -99,4 +98,4 @@ def remove_rating(request, rating_id):
     product_id = rating.item.id
     rating.delete()
     messages.success(request, "Rating deleted successfully")
-    return redirect('product_detail', pk=product_id)
+    return redirect('store:product_detail', pk=product_id)

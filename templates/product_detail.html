@@ -1,71 +1,92 @@
-{% extends 'base.html' %}
+    {% extends 'base.html' %}
 
-{% block content %}
-
-<!-- Ratings Section -->
-<hr>
-<div class="ratings-section">
-    <h3>Customer Ratings</h3>
-
-    <!-- Display messages -->
-    {% if messages %}
-    <div class="alert-messages">
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">
-            {{ message }}
+    {% block content %}
+    <!-- Product Details Section -->
+    <div class="product-details mb-4 p-4 border rounded">
+        <h2 class="mb-3">{{ product.name }}</h2>
+        <div class="mb-3">
+            <strong>Stock:</strong> {{ product.stock }}
         </div>
-        {% endfor %}
+        <div>
+            <strong>Description:</strong> {{ product.description }}
+        </div>
+        <div class="btn-group">
+            <form action="{% url 'store:product_delete' product.pk %}">
+                {%csrf_token%}
+                {{form.as_p}}
+                <input type="submit" value="Delete" class="btn btn-danger custom mt-2 m-2 ">
+            </form>
+            <form action="{% url 'store:product_edit' product.pk %}">
+                {% csrf_token %}
+                {{form.as_p}}
+                <input type="submit" value="Edit" class="btn btn-success custom mt-2 m-2">
+            </form>
+        </div>
     </div>
-    {% endif %}
 
-    <!-- Display Existing Ratings -->
-    {% if product.ratings.all %}
+
+
+    <hr>
+
+    <!-- Ratings Section -->
+    <div class="ratings-section">
+        <h3>Customer Ratings</h3>
+
+        <!-- Display messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Display Existing Ratings -->
         {% for rating in product.ratings.all %}
-        <div class="rating-card" style="border: 1px solid #ddd; padding: 10px; margin: 10px 0;">
-            <p>
-                <strong>{{ rating.user.username }}</strong>
-                <span style="color: gold;">
-                    {% with ''|center:rating.stars as range %}
-                        {% for _ in range %}★{% endfor %}
-                    {% endwith %}
-                </span>
-                <small>({{ rating.created_at|date:"F j, Y" }})</small>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <p>
+                        <strong>{{ rating.user.username }}</strong>
+                        <span class="text-warning">
+                            {% for _ in ''|center:rating.stars %}★{% endfor %}
+                        </span>
+                        <small class="text-muted">({{ rating.created_at|date:"F j, Y" }})</small>
+                    </p>
 
-                {% if rating.user == request.user or request.user.is_staff %}
-                <form action="{% url 'remove_rating' rating.id %}" method="post" class="d-inline">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-sm btn-danger ml-2"
-                            onclick="return confirm('Are you sure you want to delete this rating?')">
-                        Remove
-                    </button>
-                </form>
-                {% endif %}
-            </p>
-
-            {% if rating.comment %}
-            <div class="comment-box" style="background: #f8f9fa; padding: 8px; border-radius: 4px; margin-top: 8px;">
-                <p>{{ rating.comment }}</p>
+                    <!-- Display Comment -->
+                    {% if rating.review.comment %}
+                        <div class="bg-light p-2 rounded mt-2">
+                            <p class="mb-0">{{ rating.review.comment }}</p>
+                        </div>
+                    {% endif %}
+                    {% if rating.user == request.user or request.user.is_staff %}
+                        <form action="{% url 'store:remove_rating' rating.id %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('Are you sure you want to delete this rating?')">
+                                Remove
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
             </div>
-            {% endif %}
-        </div>
+        {% empty %}
+            <p class="text-muted">No ratings yet. Be the first to rate!</p>
         {% endfor %}
-    {% else %}
-        <p>No ratings yet. Be the first to rate!</p>
-    {% endif %}
+    {% if user.is_authenticated %}
+        <!-- Rating Submission Form -->
+        <div class="mt-4">
+            <h4>Add Your Rating and Review</h4>
+            <form action="{% url 'store:rate_item' product.id %}" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ rating_form.stars }}
+                </div>
+                <div class="mb-3">
+                    {{ review_form.comment }}
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Review</button>
+            </form>
+        </div>
+    </div>
 
-    <!-- Rating Submission Form -->
-    <h4>Add Your Rating and Review</h4>
-    <form action="{% url 'rate_item' product.id %}" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label>Rating:</label>
-            {{ rating_form.stars }}
-        </div>
-        <div class="form-group">
-            <label>Review:</label>
-            {{ review_form.comment }}
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-</div>
-{% endblock %}
+    {% endif %}
+    {% endblock %}

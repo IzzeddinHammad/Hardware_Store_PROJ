@@ -8,7 +8,7 @@
 {% if object_list %}
     {% for product in object_list %}
         <div>
-            <h3><a href="{% url 'product_detail' product.pk %}">{{ product.name }}</a></h3>
+            <h3><a href="{% url 'store:product_detail' product.pk %}">{{ product.name }}</a></h3>
             <p>{{ product.description }}</p>
             <p>Price: €{{ product.price }}</p>
         </div>

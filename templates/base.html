@@ -28,7 +28,7 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Hardware Store</a>
 
-            <form class="d-flex ms-auto" action="{% url 'search_results' %}" method="get">
+            <form class="d-flex ms-auto" action="{% url 'store:search_results' %}" method="get">
                 <input name="q" class="form-control me-2" type="search" placeholder="Search for products..." aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
@@ -42,13 +42,13 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             {% if user.profile %}
-                                <li><a class="dropdown-item" href="{% url 'show_profile' user.profile.pk %}">View Profile</a></li>
-                                <li><a class="dropdown-item" href="{% url 'edit_profile' user.profile.pk %}">Edit Profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'accounts:show_profile' user.profile.pk %}">View Profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'accounts:edit_profile' user.profile.pk %}">Edit Profile</a></li>
                                 <li><a class="dropdown-item" href="{% url 'order:order_history' %}">order history</a></li>
                             {% else %}
-                                <li><a class="dropdown-item" href="{% url 'create_profile' %}">Create Profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'accounts:create_profile' %}">Create Profile</a></li>
                             {% endif %}
-                            <li><a class="dropdown-item" href="{% url 'password_change' %}">Change Password</a></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:password_change' %}">Change Password</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form method="post" action="{% url 'logout' %}">
@@ -70,14 +70,9 @@
                         <a class="nav-link" href="{% url 'login' %}">Log In</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+                        <a class="nav-link" href="{% url 'accounts:signup' %}">Sign Up</a>
                     </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="{% url 'csignup' %}">Customer Sign Up</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'vsignup' %}">Vendor Sign Up</a>
-                    </li> -->
+
                 {% endif %}
             </ul>
         </div>

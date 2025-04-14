@@ -27,8 +27,8 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="{% url 'edit_profile' profile.pk %}" class="btn btn-primary">Edit Profile</a>
-                        <a href="{% url 'password_change' %}" class="btn btn-secondary">Change Password</a>
+                        <a href="{% url 'accounts:edit_profile' profile.pk %}" class="btn btn-primary">Edit Profile</a>
+                        <a href="{% url 'accounts:password_change' %}" class="btn btn-secondary">Change Password</a>
                     </div>
                 </div>
             </div>

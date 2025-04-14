@@ -44,7 +44,7 @@
                     <!-- Actions section containing the Sign In button and forgot password link -->
                     <div class="actions">
                         <button type="submit" class="btn">Sign in</button>
-                        <a href="{% url 'password_reset' %}" class="forgot-password">Forgot password?</a>
+                        <a href="{% url 'accounts:password_reset' %}" class="forgot-password">Forgot password?</a>
                     </div>
                     <!-- Divider text for alternative login options -->
                     <div class="or-divider">or</div>
@@ -58,7 +58,7 @@
                     </div>
                     <!-- Section for account creation -->
                     <div class="create-account">
-                        <p>New to Woodcraft? <a href="{% url 'csignup' %}">Create Account</a></p>
+                        <p>New to Woodcraft? <a href="{% url 'accounts:signup' %}">Create Account</a></p>
                     </div>
                 </form>
             </div>

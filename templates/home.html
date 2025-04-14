@@ -9,7 +9,7 @@
     <div class="row justify-content-center mb-5">
         <div class="col-md-6">
             <h4 class="text-center mb-3">Create a New Product</h4>
-            <form action="{% url 'product_new' %}" method="post" class="border p-4 rounded shadow-sm">
+            <form action="{% url 'store:product_new' %}" method="post" class="border p-4 rounded shadow-sm">
                 {% csrf_token %}
                 <div class="mb-3">
                     {{ form.as_p }}
@@ -24,7 +24,7 @@
 
 {% for product in all_products_list %}
 <div>
-    <h2><a href="{% url 'product_detail' product.pk %}">{{ product.name }}</a></h2>
+    <h2><a href="{% url 'store:product_detail' product.pk %}">{{ product.name }}</a></h2>
 </div>
 {% endfor %}
 
@@ -32,7 +32,7 @@
     <div class="container">
         <ul class="list-inline mb-0">
             <li class="list-inline-item">
-                <a href="{% url 'terms_conditions' %}" class="text-white text-decoration-none">Terms and Conditions</a>
+                <a href="{% url 'store:terms_conditions' %}" class="text-white text-decoration-none">Terms and Conditions</a>
             </li>
         </ul>
     </div>

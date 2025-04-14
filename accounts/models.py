@@ -3,16 +3,9 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-# Create your models here.
-
-
 
 class CustomUser(AbstractUser):
-    pass
-
-
-
-
+    is_vendor = models.BooleanField(default=False)
 
 
 
@@ -22,13 +15,10 @@ class Profile(models.Model):
         null=True,
         on_delete=models.CASCADE,
     )
-    date_of_birth = models.DateField(blank=False , null=False)
+    date_of_birth = models.DateField(blank=False, null=False)
 
     def __str__(self):
         return str(self.user.username)
 
     def get_absolute_url(self):
-        return reverse('show_profile' , args=[str(self.id)])
-
-
-
+        return reverse('accounts:show_profile', args=[str(self.id)])

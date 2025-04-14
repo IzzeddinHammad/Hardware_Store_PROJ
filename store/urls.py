@@ -6,6 +6,9 @@ from .views import (
 
 from django.views.generic import TemplateView
 
+app_name = 'store'
+
+
 urlpatterns = [
     path('', HomePageView.as_view(), name='home'),
     path('products/', ProductListView.as_view(), name='product_list'),
