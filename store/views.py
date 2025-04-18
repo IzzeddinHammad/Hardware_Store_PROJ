@@ -30,11 +30,13 @@ class VendorRequiredMixin(UserPassesTestMixin):
 class ProductCreateView(LoginRequiredMixin, VendorRequiredMixin, CreateView):
     model = Product
     template_name = 'product_new.html'
-    fields = ['name','description', 'image', 'price', 'stock' , 'vendor' , 'category']
+    fields = ['name','description', 'image', 'price', 'stock', 'category']
 
     def form_valid(self, form):
+        form.instance.creator = self.request.user
         form.instance.vendor = self.request.user
         return super().form_valid(form)
+
 
 class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
@@ -93,7 +95,7 @@ def rate_item(request, product_id):
         'review_form': review_form
     })
 
-    
+
 
 def remove_rating(request, rating_id):
     rating = get_object_or_404(Rating, id=rating_id, user=request.user)

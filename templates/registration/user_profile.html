@@ -25,6 +25,10 @@
                             <div class="col-md-4 fw-bold">Account Created:</div>
                             <div class="col-md-8">{{ profile.user.date_joined }}</div>
                         </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 fw-bold">Vendor</div>
+                            <div class="col-md-8">{{ profile.user.is_vendor }}</div>
+                        </div>
                     </div>
                     <div class="card-footer">
                         <a href="{% url 'accounts:edit_profile' profile.pk %}" class="btn btn-primary">Edit Profile</a>

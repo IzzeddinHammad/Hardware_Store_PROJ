@@ -10,18 +10,20 @@
         <div>
             <strong>Description:</strong> {{ product.description }}
         </div>
-        <div class="btn-group">
-            <form action="{% url 'store:product_delete' product.pk %}">
-                {%csrf_token%}
-                {{form.as_p}}
-                <input type="submit" value="Delete" class="btn btn-danger custom mt-2 m-2 ">
-            </form>
-            <form action="{% url 'store:product_edit' product.pk %}">
-                {% csrf_token %}
-                {{form.as_p}}
-                <input type="submit" value="Edit" class="btn btn-success custom mt-2 m-2">
-            </form>
-        </div>
+        {% if request.user.is_superuser or request.user == product.creator %}
+            <div class="btn-group">
+                <form action="{% url 'store:product_delete' product.pk %}">
+                    {%csrf_token%}
+                    {{form.as_p}}
+                    <input type="submit" value="Delete" class="btn btn-danger custom mt-2 m-2 ">
+                </form>
+                <form action="{% url 'store:product_edit' product.pk %}">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <input type="submit" value="Edit" class="btn btn-success custom mt-2 m-2">
+                </form>
+            </div>
+        {% endif %}
     </div>
 
 
