@@ -10,6 +10,9 @@
         <div>
             <strong>Description:</strong> {{ product.description }}
         </div>
+        <div>
+            <strong>Product Creator:</strong> {{ product.creator }}
+        </div>
         {% if request.user.is_superuser or request.user == product.creator %}
             <div class="btn-group">
                 <form action="{% url 'store:product_delete' product.pk %}">

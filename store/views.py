@@ -12,6 +12,11 @@ class HomePageView(ListView):
     template_name = 'home.html'
     context_object_name = "all_products_list"
 
+
+def my_products_view(request):
+    products = Product.objects.filter(creator=request.user)
+    return render(request, 'my_products.html', {'products': products})
+
 class ProductListView(ListView):
     model = Product
     template_name = "product_list.html"
