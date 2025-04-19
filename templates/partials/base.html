@@ -56,31 +56,36 @@
                                             
                                     </ul>
                                 </li>
-                                <li>
-                                    <a href="javascript:void(0);">Vendor</a>
-                                    <ul class="nav-dropdown nav-submenu">
-                                        <li><a href="{% url 'vendor:dashboard' %}">Dashboard</a></li>
-                                        <li><a href="{% url 'vendor:products' %}">Products</a></li>
-                                        <li><a href="{% url 'vendor:create_product' %}">Create Product</a></li>
-                                        <li><a href="{% url 'vendor:orders' %}">Orders</a></li>
-                                        <li><a href="{% url 'vendor:coupons' %}">Coupons</a></li>
-                                        <li><a href="{% url 'vendor:notis' %}">Notifications</a></li>
-                                        <li><a href="{% url 'vendor:reviews' %}">Reviews</a></li>
-                                        <li><a href="{% url 'vendor:notis' %}">Notis</a></li>
-                                        <li><a href="{% url 'vendor:profile' %}">Profile</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0);">Customer</a>
-                                    <ul class="nav-dropdown nav-submenu">
-                                        <li><a href="{% url 'customer:dashboard' %}">Dashboard</a></li>
-                                        <li><a href="{% url 'customer:orders' %}">Orders</a></li>
-                                        <li><a href="{% url 'customer:wishlist' %}">Wishlist</a></li>
-                                        <li><a href="{% url 'customer:addresses' %}">Address</a></li>
-                                        <li><a href="{% url 'customer:notis' %}">Notifications</a></li>
-                                        <li><a href="{% url 'customer:profile' %}">Profile</a></li>
-                                    </ul>
-                                </li>
+                                    {% if request.user.is_authenticated %}
+                                        {% if request.user.profile.user_type == "Vendor" %}
+                                            <li>
+                                                <a href="javascript:void(0);">Vendor</a>
+                                                <ul class="nav-dropdown nav-submenu">
+                                                    <li><a href="{% url 'vendor:dashboard' %}">Dashboard</a></li>
+                                                    <li><a href="{% url 'vendor:products' %}">Products</a></li>
+                                                    <li><a href="{% url 'vendor:create_product' %}">Create Product</a></li>
+                                                    <li><a href="{% url 'vendor:orders' %}">Orders</a></li>
+                                                    <li><a href="{% url 'vendor:coupons' %}">Coupons</a></li>
+                                                    <li><a href="{% url 'vendor:notis' %}">Notifications</a></li>
+                                                    <li><a href="{% url 'vendor:reviews' %}">Reviews</a></li>
+                                                    <li><a href="{% url 'vendor:notis' %}">Notis</a></li>
+                                                    <li><a href="{% url 'vendor:profile' %}">Profile</a></li>
+                                                </ul>
+                                            </li>
+                                        {% elif request.user.profile.user_type == "Customer" %}
+                                            <li>
+                                                <a href="javascript:void(0);">Customer</a>
+                                                <ul class="nav-dropdown nav-submenu">
+                                                    <li><a href="{% url 'customer:dashboard' %}">Dashboard</a></li>
+                                                    <li><a href="{% url 'customer:orders' %}">Orders</a></li>
+                                                    <li><a href="{% url 'customer:wishlist' %}">Wishlist</a></li>
+                                                    <li><a href="{% url 'customer:addresses' %}">Address</a></li>
+                                                    <li><a href="{% url 'customer:notis' %}">Notifications</a></li>
+                                                    <li><a href="{% url 'customer:profile' %}">Profile</a></li>
+                                                </ul>
+                                            </li>
+                                        {% endif %}
+                                    {% endif %}
                                 <li>
                                     <a href="javascript:void(0);">Pages</a>
                                     <ul class="nav-dropdown nav-submenu">
