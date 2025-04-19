@@ -62,7 +62,7 @@ def login_view(request):
                     user_instance = accounts_models.User.objects.get(email=email, is_active=True)
                     user_authenticate = authenticate(request, email=email, password=password)
 
-                    if user_instance is not None:
+                    if user_authenticate is not None:
                         login(request, user_authenticate)
                         messages.success(request, "You are Logged In")
                         next_url = request.GET.get("next", 'store:index')
@@ -70,7 +70,7 @@ def login_view(request):
                         print("next_url ========", next_url)
                         if next_url == '/undefined/':
                             return redirect('store:index')
-                        
+    
                         if next_url == 'undefined':
                             return redirect('store:index')
 
@@ -78,9 +78,10 @@ def login_view(request):
                             return redirect('store:index')
 
                         return redirect(next_url)
-
                     else:
-                        messages.error(request, 'Username or password does not exist')
+                        messages.error(request, "Username or password does not exist")
+                        return redirect("accounts:sign-in")
+
                 except accounts_models.User.DoesNotExist:
                     messages.error(request, 'User does not exist')
             else:
