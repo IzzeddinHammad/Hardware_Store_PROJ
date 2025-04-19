@@ -220,6 +220,29 @@
                 </div>
             </div>
         </div>
+        {% if request.user.is_authenticated and request.user.profile.user_type == "Customer" %}
+        <form action="{% url 'store:submit_review' product.id %}" method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="review" class="form-label">Write your review:</label>
+                <textarea class="form-control" name="review" id="review" rows="4" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="rating" class="form-label">Rating (1 to 5):</label>
+                <select name="rating" class="form-select" required>
+                    <option value="">Select</option>
+                    <option value="1">1 - Poor</option>
+                    <option value="2">2 - Fair</option>
+                    <option value="3">3 - Good</option>
+                    <option value="4">4 - Very good</option>
+                    <option value="5">5 - Excellent</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
+    {% else %}
+        <p><a href="{% url 'accounts:sign-in' %}">Sign in</a> to write a review.</p>
+    {% endif %}    
     </div>
 </section>
 

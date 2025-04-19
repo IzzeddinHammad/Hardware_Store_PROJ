@@ -19,6 +19,10 @@ from customer import models as customer_models
 from vendor import models as vendor_models
 from accounts import models as accounts_models
 from plugin.tax_calculation import tax_calculation
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect
+from .models import Product, Review, OrderItem
+from accounts.models import Profile
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -574,3 +578,28 @@ def privacy_policy(request):
 
 def terms_conditions(request):
     return render(request, "pages/terms_conditions.html")
+
+
+@login_required
+def submit_review(request, product_id):
+    user_profile = get_object_or_404(Profile, user=request.user)
+    if user_profile.user_type != "Customer":
+        messages.error(request, "Only customers can leave a review.")
+        return redirect("store:product_detail", product_id)
+
+    product = get_object_or_404(Product, id=product_id)
+    has_ordered = OrderItem.objects.filter(product=product, order__customer=request.user).exists()
+    if not has_ordered:
+        messages.error(request, "You can only review products you've purchased.")
+        return redirect("store:product_detail", product_id)
+
+    if request.method == "POST":
+        review_text = request.POST.get("review")
+        rating = int(request.POST.get("rating"))
+        if Review.objects.filter(user=request.user, product=product).exists():
+            messages.warning(request, "You've already reviewed this product.")
+            return redirect("store:product_detail", product_id)
+
+        Review.objects.create(user=request.user, product=product, review=review_text, rating=rating)
+        messages.success(request, "Your review has been submitted.")
+        return redirect("store:product_detail", product_id)
