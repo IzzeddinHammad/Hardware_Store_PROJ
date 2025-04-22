@@ -28,6 +28,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField(default=0)
     image = models.ImageField(upload_to='products/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     creator = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
@@ -60,3 +61,5 @@ class Review(models.Model):
     rating = models.OneToOneField(Rating, on_delete=models.CASCADE, related_name='review')
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+

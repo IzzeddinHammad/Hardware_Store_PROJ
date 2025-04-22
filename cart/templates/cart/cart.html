@@ -43,7 +43,7 @@
     <p>{{ total }}</p>
     "{{ voucher.code }}" voucher
     ({{ voucher.discount }}% off)
-    {{ discount |floatformat: "2"}}
+    {{ discount |floatformat:"2"}}
 
     {{ new_total|floatformat:"2"}}
     {% else %}

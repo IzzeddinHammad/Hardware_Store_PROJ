@@ -4,13 +4,19 @@
     <!-- Product Details Section -->
     <div class="product-details mb-4 p-4 border rounded">
         <h2 class="mb-3">{{ product.name }}</h2>
+        <div>
+            <strong>Product Price:</strong> {{ product.price }}
+        </div>
         <div class="mb-3">
             <strong>Stock:</strong> {{ product.stock }}
         </div>
-        <div>
+        <div class="mb-3">
             <strong>Description:</strong> {{ product.description }}
         </div>
-        <div>
+        <div class="mb-3">
+            <strong>category:</strong> {{ product.category }}
+        </div>
+        <div class="mb-3">
             <strong>Product Creator:</strong> {{ product.creator }}
         </div>
         {% if request.user.is_superuser or request.user == product.creator %}

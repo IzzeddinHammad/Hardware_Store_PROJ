@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Product , Rating
 from django.contrib import messages
-from .forms import RatingForm , ReviewForm
+from .forms import RatingForm , ReviewForm , ProductForm
 
 class HomePageView(ListView):
     model = Product
@@ -47,10 +47,13 @@ class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
     template_name = 'product_edit.html'
     fields = ['price', 'stock']
+    success_url = reverse_lazy('store:product_list')
 
     def test_func(self):
         product = self.get_object()
         return self.request.user.is_superuser or product.vendor == self.request.user
+
+
 
 class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Product
@@ -67,9 +70,12 @@ class SearchResultsListView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get("q")
+
         if query:
             return Product.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
         return Product.objects.none()
+
+
 
 def rate_item(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
@@ -108,3 +114,18 @@ def remove_rating(request, rating_id):
     rating.delete()
     messages.success(request, "Rating deleted successfully")
     return redirect('store:product_detail', pk=product_id)
+
+
+
+def edit_product(request,product_id):
+    product = Product.objects.get(id=product_id)
+    if request.method == 'POST':
+        form = ProductForm(request.POST , instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('product_detail')
+
+    else:
+        form = ProductForm(instance=product)
+
+    return render(request , 'product_edit.html' , {'form':form})

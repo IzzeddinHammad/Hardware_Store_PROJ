@@ -1,18 +1,58 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-5">My Inventory</h1>
+        <a href="{% url 'store:product_new' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add New Product
+        </a>
+    </div>
 
-<h1>My Products</h1>
-{% for product in products %}
-    {% if product.creator == request.user %}
-    <div>
-        <h2><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h2>
+    {% if products %}
+    <div class="row">
+        {% for product in products %}
+            {% if product.creator == request.user %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm border-0">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 180px; object-fit: cover;">
+                    {% else %}
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                            <i class="fas fa-tools fa-3x text-secondary"></i>
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{{ product.get_absolute_url }}" class="text-decoration-none text-dark">
+                                {{ product.name }}
+                            </a>
+                        </h5>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <a href="{{ product.get_absolute_url }}" class="btn btn-sm btn-outline-primary">
+                                View Details
+                            </a>
+                            <small class="text-muted">Added on {{ product.created_at|date:"M d, Y" }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-info-circle me-3 fa-2x"></i>
+            <div>
+                <h4 class="alert-heading">No Products Found</h4>
+                <p class="mb-0">You haven't created any products yet. Click the "Add New Product" button to get started.</p>
+            </div>
+        </div>
     </div>
     {% endif %}
-{% empty %}
-<p>You haven't created any products yet.</p>
-{% endfor %}
-
+</div>
 
 {% endblock %}

@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto:wght@400;500&display=swap">
 
 
+
 </head>
 
 <body>
@@ -45,7 +46,12 @@
                                 <li><a class="dropdown-item" href="{% url 'accounts:show_profile' user.profile.pk %}">View Profile</a></li>
                                 <li><a class="dropdown-item" href="{% url 'accounts:edit_profile' user.profile.pk %}">Edit Profile</a></li>
                                 <li><a class="dropdown-item" href="{% url 'order:order_history' %}">order history</a></li>
-                                <li><a class="dropdown-item" href="{% url 'store:my_products' %}">My Products</a></li>
+                                <li><a class="dropdown-item" href="{% url 'cart:cart_detail' %}">cart details</a></li>
+
+
+                                {% if user.is_superuser or user.is_vendor %}
+                                    <li><a class="dropdown-item" href="{% url 'store:my_products' %}">My Products</a></li>
+                                {% endif %}
 
                             {% else %}
                                 <li><a class="dropdown-item" href="{% url 'accounts:create_profile' %}">Create Profile</a></li>
