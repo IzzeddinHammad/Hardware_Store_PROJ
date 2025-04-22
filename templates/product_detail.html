@@ -31,6 +31,11 @@
                     {{form.as_p}}
                     <input type="submit" value="Edit" class="btn btn-success custom mt-2 m-2">
                 </form>
+                <form action="{% url 'cart:add_cart' product.pk %}">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <input type="submit" value="add to cart" class="btn btn-warning custom mt-2 m-2">
+                </form>
             </div>
         {% endif %}
     </div>

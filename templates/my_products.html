@@ -18,8 +18,17 @@
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card h-100 shadow-sm border-0">
                     {% if product.image %}
-                        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 180px; object-fit: cover;">
-                    {% else %}
+                    <div style="height: 180px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                        <img src="{{ product.image.url }}"
+                             style="width: 100%;
+                                    height: 100%;
+                                    object-fit: contain;
+                                    object-position: center;
+                                    max-width: 100%;
+                                    max-height: 100%;"
+                             alt="{{ product.name }}"
+                             class="card-img-top">
+                    </div>                     {% else %}
                         <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
                             <i class="fas fa-tools fa-3x text-secondary"></i>
                         </div>
