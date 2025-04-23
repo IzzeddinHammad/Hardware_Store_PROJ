@@ -146,9 +146,9 @@ def create_order(request):
 
         voucher = get_object_or_404(Voucher, id=voucher_id)
         if voucher != None:
-            order_details.voucher = voucher 
+            order_details.voucher = voucher
             cart_total = Decimal(cart_total)
-            order_details.discount = cart_total*(voucher.discount/Decimal('100')) 
+            order_details.discount = cart_total*(voucher.discount/Decimal('100'))
             order_details.total = (cart_total-order_details.discount)
             order_details.save()
         if cart:
@@ -170,3 +170,6 @@ def create_order(request):
 
     except (ObjectDoesNotExist, StripeError, Exception) as e:
         return redirect('/products/')
+
+
+

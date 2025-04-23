@@ -3,7 +3,7 @@ from django.urls import path
 from .views import (
     HomePageView, ProductDetailView, ProductCreateView,
     ProductUpdateView, ProductDeleteView, SearchResultsListView, ProductListView,
-    rate_item, remove_rating, my_products_view,edit_product 
+    rate_item, remove_rating, my_products_view,edit_product
 )
 
 from django.views.generic import TemplateView
@@ -21,6 +21,6 @@ urlpatterns = [
     path('terms_conditions', TemplateView.as_view(template_name='terms_conditions.html'), name='terms_conditions'),
     path('products/<uuid:product_id>/rate/', rate_item, name='rate_item'),
     path('ratings/<int:rating_id>/delete/', remove_rating, name='remove_rating'),
-    path('my_products/', my_products_view, name='my_products'),
+    path('products/my_products/', my_products_view, name='my_products'),
     path('products/<uuid:pk>/edit_prd' , edit_product , name='edit'),
 ]

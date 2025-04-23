@@ -2,15 +2,60 @@
 
 {% block content %}
 
-
-
-
-<h1>Our Products</h1>
-
-{% for product in products %}
-    <div>
-        <h2><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h2>
+<div class="container">
+    <div class="row mb-4">
+        <div class="col">
+            <h1>Our Products</h1>
+            {% if current_category %}
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'store:product_list' %}">All Products</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            {{ current_category.title }}
+                        </li>
+                    </ol>
+                </nav>
+                <p>Showing products in category: <strong>{{ current_category.title }}</strong></p>
+            {% else %}
+                <p>Showing all products</p>
+            {% endif %}
+        </div>
     </div>
-{% endfor %}
+
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                    </h5>
+                    <p class="card-text">${{ product.price }}</p>
+                    {% if product.category %}
+                    <span class="badge bg-secondary">{{ product.category.title }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col">
+            <div class="alert alert-warning">
+                {% if current_category %}
+                    No products found in category: {{ current_category.title }}
+                {% else %}
+                    No products available
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
 
 {% endblock content %}

@@ -35,6 +35,34 @@
             </form>
 
 
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="main_nav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Categories</a>
+                                <ul class="dropdown-menu">
+                                    {% for category in categories %}
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'store:product_list' %}?category={{ category.slug }}">
+                                                {{ category.title }}
+                                            </a>
+                                        </li>
+                                    {% empty %}
+                                        <li><a class="dropdown-item" href="#">No categories yet</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+
+
+
+
+
             <ul class="navbar-nav ms-3">
                 {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
@@ -47,6 +75,7 @@
                                 <li><a class="dropdown-item" href="{% url 'accounts:edit_profile' user.profile.pk %}">Edit Profile</a></li>
                                 <li><a class="dropdown-item" href="{% url 'order:order_history' %}">order history</a></li>
                                 <li><a class="dropdown-item" href="{% url 'cart:cart_detail' %}">cart details</a></li>
+
 
 
                                 {% if user.is_superuser or user.is_vendor %}
@@ -99,3 +128,9 @@
 
 </body>
 </html>
+
+
+
+
+
+

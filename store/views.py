@@ -3,7 +3,7 @@ from django.views.generic import DetailView, ListView, CreateView, UpdateView, D
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Product , Rating
+from .models import Product , Rating , Category
 from django.contrib import messages
 from .forms import RatingForm , ReviewForm , ProductForm
 
@@ -11,6 +11,20 @@ class HomePageView(ListView):
     model = Product
     template_name = 'home.html'
     context_object_name = "all_products_list"
+
+    def get_queryset(self):
+
+        queryset = super().get_queryset()
+        category_slug = self.request.GET.get('category')
+
+        if category_slug:
+            queryset = queryset.filter(category__slug = category_slug)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 
 def my_products_view(request):
@@ -21,6 +35,25 @@ class ProductListView(ListView):
     model = Product
     template_name = "product_list.html"
     context_object_name = "products"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        category_slug = self.request.GET.get('category')
+
+        if category_slug:
+            self.category = get_object_or_404(Category, slug=category_slug)
+            queryset = queryset.filter(category=self.category)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+
+        if hasattr(self, 'category'):
+            context['current_category'] = self.category
+
+        return context
 
 class ProductDetailView(DetailView):
     model = Product
@@ -129,3 +162,7 @@ def edit_product(request,product_id):
         form = ProductForm(instance=product)
 
     return render(request , 'product_edit.html' , {'form':form})
+
+
+
+
