@@ -363,7 +363,7 @@
                                                                                                         <p style="font-family: 'Inter', sans-serif; color: #97588a; font-size: 14px; word-break: break-word; margin: 0px; line-height: 150%;">{{item.qty}}</p>
                                                                                                     </td>
                                                                                                     <td align="left" width="33.333333333333336%" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px; border-color: #cccccc;" >
-                                                                                                        <p style="font-family: 'Inter', sans-serif; color: #97588a; font-size: 14px; word-break: break-word; margin: 0px; line-height: 150%;">${{item.sub_total}}</p>
+                                                                                                        <p style="font-family: 'Inter', sans-serif; color: #97588a; font-size: 14px; word-break: break-word; margin: 0px; line-height: 150%;">€{{item.sub_total}}</p>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                             {% endfor %}
@@ -441,7 +441,7 @@
                                                                                                 <th align="left" bgcolor="#FFF" valign="middle" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px; border-color: #cccccc;" >
                                                                                                     <h1 style=" font-family: 'Inter', sans-serif; color: #111111; font-size: 14px; font-weight: 400; word-break: break-word; line-height: 125%; margin: 0px; " >
                                                                                                         <span style="line-height: 125%; margin: 0px; color: rgb(151, 88, 138);">
-                                                                                                            ${{ order.sub_total }}
+                                                                                                            €{{ order.sub_total }}
                                                                                                         </span>
                                                                                                     </h1>
                                                                                                 </th>
@@ -456,7 +456,7 @@
                                                                                                 <th align="left" bgcolor="#FFF" valign="middle" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px; border-color: #cccccc;" >
                                                                                                     <h1 style=" font-family: 'Inter', sans-serif; color: #111111; font-size: 14px; font-weight: 400; word-break: break-word; line-height: 125%; margin: 0px; " >
                                                                                                         <span style="line-height: 125%; margin: 0px; color: rgb(151, 88, 138);">
-                                                                                                            ${{ order.shipping }}
+                                                                                                            €{{ order.shipping }}
                                                                                                         </span>
                                                                                                     </h1>
                                                                                                 </th>
@@ -471,7 +471,7 @@
                                                                                                 <th align="left" bgcolor="#FFF" valign="middle" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px; border-color: #cccccc;" >
                                                                                                     <h1 style=" font-family: 'Inter', sans-serif; color: #111111; font-size: 14px; font-weight: 400; word-break: break-word; line-height: 125%; margin: 0px; " >
                                                                                                         <span style="line-height: 125%; margin: 0px; color: rgb(151, 88, 138);">
-                                                                                                            ${{ order.tax }}
+                                                                                                            €{{ order.tax }}
                                                                                                         </span>
                                                                                                     </h1>
                                                                                                 </th>
@@ -486,7 +486,7 @@
                                                                                                 <th align="left" bgcolor="#FFF" valign="middle" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px; border-color: #cccccc;" >
                                                                                                     <h1 style=" font-family: 'Inter', sans-serif; color: #111111; font-size: 14px; font-weight: 400; word-break: break-word; line-height: 125%; margin: 0px; " >
                                                                                                         <span style="line-height: 125%; margin: 0px; color: rgb(151, 88, 138);">
-                                                                                                            ${{ order.total }}
+                                                                                                            €{{ order.total }}
                                                                                                         </span>
                                                                                                     </h1>
                                                                                                 </th>

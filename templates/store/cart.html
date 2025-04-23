@@ -39,12 +39,12 @@
                                         <img src="{{item.product.image.url}}" alt="" style="width: 100px; height: 100px; object-fit: cover" />
                                         <div class="p-2">
                                             <h5>{{item.product.name}}</h5>
-                                            <p class="mb-0 mt-0">Price: ${{item.price|intcomma}}</p>
+                                            <p class="mb-0 mt-0">Price: €{{item.price|intcomma}}</p>
                                             <p class="mb-0 mt-0">Vendor: {{item.product.vendor.profile.full_name}}</p>
                                         </div>
                                     </div> 
                                     <div class="col-lg-2">
-                                        <h4 class="fs-3">${{ item.price|intcomma }}</h4>
+                                        <h4 class="fs-3">€{{ item.price|intcomma }}</h4>
                                     </div>
                                     <div class="col-lg-2 d-flex">
                                         <button type="button" class="btn bg-primary text-white btn-sm update_cart_qty" data-update_type="decrease" data-product_id="{{item.product.id}}" data-item_id="{{item.id}}">-</button>
@@ -52,7 +52,7 @@
                                         <button type="button" class="btn bg-primary text-white btn-sm update_cart_qty" data-update_type="increase" data-product_id="{{item.product.id}}" data-item_id="{{item.id}}">+</button>
                                     </div>
                                     <div class="col-lg-2">
-                                        <h4 class="fs-3 mb-0">$<span class="item_sub_total_{{item.id}}">{{item.sub_total|intcomma}}</span></h4>
+                                        <h4 class="fs-3 mb-0">€<span class="item_sub_total_{{item.id}}">{{item.sub_total|intcomma}}</span></h4>
                                     </div>
                                     <div class="col-lg-2">
                                         <button type="button" class="btn bg-danger text-white btn-sm rounded delete_cart_item" data-item_id="{{item.id}}" data-product_id="{{item.product.id}}" ><i class="fas fa-trash"></i></button>
@@ -109,19 +109,19 @@
                         <div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <p class="fw-semibold fs-6">Sub-total</p>
-                                <p class="fs-6">$<span class="cart_sub_total">{{cart_sub_total|intcomma}}</span></p>
+                                <p class="fs-6">€<span class="cart_sub_total">{{cart_sub_total|intcomma}}</span></p>
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <p class="fw-semibold fs-6">Shipping</p>
-                                <p class="fs-6">$0.00</p>
+                                <p class="fs-6">€0.00</p>
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <p class="fw-semibold fs-6">Tax</p>
-                                <p class="fs-6">$0.00</p>
+                                <p class="fs-6">€0.00</p>
                             </div>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <p class="fw-bold text-dark fs-5">Total</p>
-                                <p class="fw-bold text-dark fs-5">$<span class="cart_sub_total">{{cart_sub_total|intcomma}}</span></p>
+                                <p class="fw-bold text-dark fs-5">€<span class="cart_sub_total">{{cart_sub_total|intcomma}}</span></p>
                             </div>
                         </div>
                     </div>

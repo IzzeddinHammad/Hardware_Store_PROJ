@@ -581,25 +581,25 @@ def terms_conditions(request):
 
 
 @login_required
-def submit_review(request, product_id):
+def submit_review(request, slug):
     user_profile = get_object_or_404(Profile, user=request.user)
     if user_profile.user_type != "Customer":
         messages.error(request, "Only customers can leave a review.")
-        return redirect("store:product_detail", product_id)
+        return redirect("store:product_detail", slug=slug)
 
-    product = get_object_or_404(Product, id=product_id)
+    product = get_object_or_404(Product, slug=slug, status="Published")
     has_ordered = OrderItem.objects.filter(product=product, order__customer=request.user).exists()
     if not has_ordered:
         messages.error(request, "You can only review products you've purchased.")
-        return redirect("store:product_detail", product_id)
+        return redirect("store:product_detail", slug=slug)
 
     if request.method == "POST":
         review_text = request.POST.get("review")
         rating = int(request.POST.get("rating"))
         if Review.objects.filter(user=request.user, product=product).exists():
             messages.warning(request, "You've already reviewed this product.")
-            return redirect("store:product_detail", product_id)
+            return redirect("store:product_detail", slug=slug)
 
         Review.objects.create(user=request.user, product=product, review=review_text, rating=rating)
         messages.success(request, "Your review has been submitted.")
-        return redirect("store:product_detail", product_id)
+        return redirect("store:product_detail", slug=slug)

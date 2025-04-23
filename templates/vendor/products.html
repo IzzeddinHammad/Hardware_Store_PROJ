@@ -45,7 +45,7 @@
                                         <i class="fas fa-star text-warning"></i>
                                         {% endif %}
                                     </div>
-                                        <div class="elis_rty mb-1">Price: <span class="ft-bold text-dark fs-sm">${{p.price}}</span></div>
+                                        <div class="elis_rty mb-1">Price: <span class="ft-bold text-dark fs-sm">€{{p.price}}</span></div>
                                         <div class="elis_rty mb-1">Rating: <span class="ft-bold text-dark fs-sm">{{p.average_rating|floatformat}} Rating</span></div>
                                         <div class="elis_rty mb-1">Review: <span class="ft-bold text-dark fs-sm">{{p.reviews.all.count}} Reviews</span></div>
                                         <div class="elis_rty mb-1">Orders: <span class="ft-bold text-dark fs-sm">{{p.vendor_orders.all.count}} Orders</span></div>

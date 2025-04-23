@@ -53,7 +53,7 @@
                                                     {% endif %}
                                                         
                                                 </p>
-                                                <h4 class="fs-sm ft-bold mb-0 lh-1">${{item.price}}</h4>
+                                                <h4 class="fs-sm ft-bold mb-0 lh-1">€{{item.price}}</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -77,15 +77,15 @@
                     <h4 class="mt-5 mb-2 fw-bold">Order Summary</h4>
                     <div class="">
                         <h5 class="mb-2 fs-sm"><span class="fw-bold">Date:</span> {{order.date}}</h5>
-                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Sub-total:</span> ${{order.sub_total|intcomma}}</h5>
-                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Shipping:</span> ${{order.shipping|intcomma}}</h5>
-                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Tax:</span> ${{order.tax}}</h5>
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Sub-total:</span> €{{order.sub_total|intcomma}}</h5>
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Shipping:</span> €{{order.shipping|intcomma}}</h5>
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Tax:</span> €{{order.tax}}</h5>
                         
                         {% if order.saved %}
-                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Discount:</span> -${{order.saved|intcomma}}</h5>
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Discount:</span> -€{{order.saved|intcomma}}</h5>
                         {% endif %}
                         
-                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Total:</span> ${{order.total|intcomma}}</h5>
+                        <h5 class="mb-2 fs-sm"><span class="fw-bold">Total:</span> €{{order.total|intcomma}}</h5>
                     </div>
 
                     <h4 class="mt-5 mb-2 fw-bold">Bio Data</h4>

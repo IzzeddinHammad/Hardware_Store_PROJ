@@ -44,8 +44,8 @@
                                 <span class="small ms-2">({{ product.reviews.all.count }} Reviews)</span>
                             </div>
                             <div class="elis_rty mt-3">
-                                <span class="ft-medium text-muted line-through fs-md me-3"> {% if product.regular_price %} ${{product.regular_price}} {% endif %} </span>
-                                <span class="ft-bold theme-cl fs-lg me-3">${{product.price}}</span>
+                                <span class="ft-medium text-muted line-through fs-md me-3"> {% if product.regular_price %} €{{product.regular_price}} {% endif %} </span>
+                                <span class="ft-bold theme-cl fs-lg me-3">€{{product.price}}</span>
                                 <span class="ft-regular text-light bg-success py-1 px-2 fs-sm"> {% if product.stock > 0 %} In Stock {% else %} Out Of Stock {% endif %} </span>
                             </div>
                         </div>
@@ -124,9 +124,6 @@
         </div>
     </div>
 </section>
-<!-- ======================= Product Detail End ======================== -->
-
-<!-- ======================= Product Description ======================= -->
 <section class="middle">
     <div class="container">
         <div class="row align-items-center justify-content-center">
@@ -144,7 +141,6 @@
                 </ul>
 
                 <div class="tab-content" id="myTabContent">
-                    <!-- Description Content -->
                     <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
                         <div class="description_info">
                             <p class="p-0 mb-2">
@@ -152,8 +148,6 @@
                             </p>
                         </div>
                     </div>
-
-                    <!-- Additional Content -->
                     <div class="tab-pane fade" id="information" role="tabpanel" aria-labelledby="information-tab">
                         <div class="additionals">
                             <table class="table">
@@ -168,16 +162,12 @@
                                             {% endfor %}
                                         {% endif %}
                                     {% endfor %}
-                                    
                                 </tbody>
                             </table>
                         </div>
                     </div>
-
-                    <!-- Reviews Content -->
                     <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
                         <div class="reviews_info">
-                            
                             {% for r in product.reviews.all %}
                                 <div class="single_rev d-flex align-items-start br-bottom py-3 bg-light rounded p-3 mb-3">
                                     <div class="single_rev_caption d-flex align-items-start pl-3">
@@ -214,104 +204,102 @@
                                     </div>
                                 </div>
                             {% endfor %}
-                                
                         </div>
+                        {% if request.user.is_authenticated and request.user.profile.user_type == "Customer" %}
+                        <form action="{% url 'store:submit_review' product.slug %}" method="POST">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="review" class="form-label">Write your review:</label>
+                                <textarea class="form-control" name="review" id="review" rows="4" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rating" class="form-label">Rating (1 to 5):</label>
+                                <select name="rating" class="form-select" required>
+                                    <option value="">Select</option>
+                                    <option value="1">1 - Poor</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Good</option>
+                                    <option value="4">4 - Very good</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                        </form>
+                        {% else %}
+                        <p><a href="{% url 'accounts:sign-in' %}">Sign in</a> to write a review.</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
-        {% if request.user.is_authenticated and request.user.profile.user_type == "Customer" %}
-        <form action="{% url 'store:submit_review' product.id %}" method="POST">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="review" class="form-label">Write your review:</label>
-                <textarea class="form-control" name="review" id="review" rows="4" required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="rating" class="form-label">Rating (1 to 5):</label>
-                <select name="rating" class="form-select" required>
-                    <option value="">Select</option>
-                    <option value="1">1 - Poor</option>
-                    <option value="2">2 - Fair</option>
-                    <option value="3">3 - Good</option>
-                    <option value="4">4 - Very good</option>
-                    <option value="5">5 - Excellent</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit Review</button>
-        </form>
-    {% else %}
-        <p><a href="{% url 'accounts:sign-in' %}">Sign in</a> to write a review.</p>
-    {% endif %}    
     </div>
 </section>
-
-
 {% if related_products %}
-    <section class="middle pt-0">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                    <div class="sec_title position-relative text-center">
-                        <h3 class="ft-bold pt-3">Related Products</h3>
+<section class="middle pt-0">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div class="sec_title position-relative text-center">
+                    <h3 class="ft-bold pt-3">Related Products</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="row align-items-center rows-products">
+            {% for p in related_products %}
+            <div class="col-lg-3 mb-3">
+                <div class="product_grid card b-0 rounded-3 shadow m-2 p-2">
+                    <div class="card-body p-0">
+                        <div class="shop_thumb position-relative">
+                            <a class="card-img-top d-block overflow-hidden" href="{% url 'store:product_detail' p.slug %}">
+                                <img class="card-img-top" style="width: 100%; height: 230px; object-fit: cover;" src="{{p.image.url}}" alt="..." />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-footer b-0 p-0 pt-2 bg-white d-flex align-items-start justify-content-between">
+                        <div class="text-left">
+                            <div class="text-left">
+                                <div class="elso_titl"><span class="small"><a href="{% url 'store:category' p.category.id %}">{{p.category.title}}</a></span></div>
+                                <h5 class="fs-md mb-0 lh-1 mb-1"><a href="{% url 'store:product_detail' p.slug %}">{{p.name}}</a></h5>
+                                <div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0 mt-3">
+                                    {% if not p.average_rating %}
+                                    <i class="fas fa-star text-warning"></i>
+                                    {% elif p.average_rating > 0 and p.average_rating < 2 %}
+                                    <i class="fas fa-star text-warning"></i>
+                                    {% elif p.average_rating > 1 and p.average_rating < 3 %}
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    {% elif p.average_rating > 2 and p.average_rating < 4 %}
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    {% elif p.average_rating > 3 and p.average_rating < 5 %}
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    {% elif p.average_rating > 4 %}
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    {% endif %}
+                                </div>
+                                <div class="elis_rty"><span class="ft-bold text-dark fs-sm">€{{p.price}}</span></div>
+                            </div>
+                            <div class="d-flex align-items-center gap-3">
+                                <button type="button" class="btn btn-sm bg-primary text-white rounded add_to_cart" data-id="{{p.id}}">Add to cart <i class="fas fa-shopping-cart ms-2"></i></button>
+                                <input type="hidden" class="quantity" value="1" name="" id="">
+                                <a href="#" class="add_to_wishlist" data-product_id="{{p.id}}"><i class="fas fa-heart fs-4 text-black"></i></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="row align-items-center rows-products">
-             {% for p in related_products %}
-                <div class="col-lg-3 mb-3">
-                    <div class="product_grid card b-0  rounded-3 shadow m-2 p-2">
-                        <div class="card-body p-0">
-                            <div class="shop_thumb position-relative">
-                                <a class="card-img-top d-block overflow-hidden" href="{% url 'store:product_detail' p.slug %}"><img class="card-img-top" style="width: 100%; height: 230px; object-fit: cover;" src="{{p.image.url}}" alt="..." /></a>
-                            </div>
-                        </div>
-                        <div class="card-footer b-0 p-0 pt-2 bg-white d-flex align-items-start justify-content-between">
-                            <div class="text-left">
-                                <div class="text-left">
-                                    <div class="elso_titl"><span class="small"><a href="{% url 'store:category' p.category.id %}">{{p.category.title}}</a></span></div>
-                                    <h5 class="fs-md mb-0 lh-1 mb-1"><a href="{% url 'store:product_detail' p.slug %}">{{p.name}}</a></h5>
-                                        <div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0 mt-3">
-                                        {% if not p.average_rating  %}
-                                        <i class="fas fa-star text-warning"></i>
-                                        {% elif p.average_rating > 0 and p.average_rating < 2 %}
-                                        <i class="fas fa-star text-warning"></i>
-                                        {% elif p.average_rating > 1 and p.average_rating < 3 %}
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        {% elif p.average_rating > 2 and p.average_rating < 4 %}
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        {% elif p.average_rating > 3 and p.average_rating < 5 %}
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        {% elif p.average_rating > 4 %}
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        {% endif %}
-                                    </div>
-                                    <div class="elis_rty"><span class="ft-bold text-dark fs-sm">${{p.price}}</span></div>
-                                </div>
-                                <div class="d-flex align-items-center gap-3">
-                                        <button type="button" class="btn btn-sm bg-primary text-white rounded add_to_cart" data-id="{{p.id}}">Add to cart <i class="fas fa-shopping-cart ms-2"></i></button>
-                                        <input type="hidden" class="quantity" value="1" name="" id="">
-                                        <a href="#" class="add_to_wishlist" data-product_id="{{p.id}}"><i class="fas fa-heart fs-4 text-black"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             {% endfor %}
         </div>
-        </div>
-    </section>
+    </div>
+</section>
 {% endif %}
-
 {% endblock content %}

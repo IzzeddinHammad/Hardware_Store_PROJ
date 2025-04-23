@@ -26,9 +26,6 @@
                     <a href="{% url 'customer:addresses' %}" class="{% if '/customer/addresses/' in request.path or '/customer/address_detail/' in request.path or '/customer/address_create/' in request.path %} active {% endif %}"><i class="fas fa-map-marker me-2"></i>Address</a>
                 </li>
                 <li>
-                    <a href="{% url 'customer:addresses' %}" class="{% if '/customer/addresses/' in request.path or '/customer/address_detail/' in request.path or '/customer/address_create/' in request.path %} active {% endif %}"><i class="fas fa-map-marker me-2"></i>Address</a>
-                </li>
-                <li>
                     <a href="{% url 'customer:profile' %}" class="{% if '/customer/profile/' in request.path %} active{% endif %}"><i class="fas fa-user me-2"></i>Profile</a>
                 </li>
                 <li>
