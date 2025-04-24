@@ -11,6 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from vouchers.models import Voucher
 from vouchers.forms import VoucherApplyForm
 from decimal import Decimal
+from django.core.mail import send_mail
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -163,6 +164,7 @@ def create_order(request):
                 product = Product.objects.get(id=item.product.id)
                 product.stock = max(0, product.stock - item.quantity)
                 product.save()
+                send_email(request, order_details)
 
             cart.delete()
 
@@ -171,5 +173,18 @@ def create_order(request):
     except (ObjectDoesNotExist, StripeError, Exception) as e:
         return redirect('/products/')
 
-
+def send_email(request, order_id):
+    try:
+        send_mail(
+            'About your order', 
+            'Thank you for choosing HSSM', 
+            'no-reply@HSSM.ie', 
+            ['p@c.ie'], 
+            fail_silently=False, 
+            html_message=f"<p>Dear {request.user.username}, </p> <p>Thank you for ordering from us. </br> Your order number is {order_id.id}</p>"
+        )
+    except Exception as e: 
+        print(f"Email error: {e}")
+    
+    
 
