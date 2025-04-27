@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hardware Store</title>
+</head>
+<body>
+    <h1>Trending Products</h1>
+    <ul>
+        {% for item in products_counts %}
+            <li>
+                {{ item.product.name }}<br>
+                Quantity Sold: {{ item.total_qty }}<br>
+                Price: ${{ item.product.price }}<br>
+                <a href="{ url 'product_detail' item.product.id }">View Product</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+{% endblock content %}
+</html>
