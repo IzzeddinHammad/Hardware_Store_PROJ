@@ -8,3 +8,4 @@
 
 deply_url : https://ca2.pythonanywhere.com/ 
 i don't know how to change the name 
+there's problems with the deployment please use the actual code
